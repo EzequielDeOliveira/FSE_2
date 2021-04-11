@@ -88,7 +88,6 @@ void bme280_temperature(float *temperature, float *humidity)
         exit(1);
     }
 
-    
     *temperature = comp_data.temperature;
     *humidity = comp_data.humidity;
 }
