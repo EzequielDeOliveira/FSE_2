@@ -1,6 +1,6 @@
 #include "gpio.h"
 
-void cofigura_pinos() {
+void bcm2835_setup() {
     if(!bcm2835_init())
         exit(0);
 

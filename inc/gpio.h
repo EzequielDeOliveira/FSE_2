@@ -13,7 +13,7 @@
 #define SENSOR_PRESENCA_2 RPI_V2_GPIO_P1_37 // BCM 26
 #define SENSOR_ABERTURA_1 RPI_V2_GPIO_P1_29 // BCM 05
 
-void cofigura_pinos();
+void bcm2835_setup();
 void ligar_lampada(int comando);
 void interrupcao(int sinal);
 
