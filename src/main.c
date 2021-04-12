@@ -2,19 +2,32 @@
 #include <signal.h>
 #include <stdlib.h>
 #include "gpio.h"
+#include "csv.h"
+#include "bme280temperature.h"
+
+void finish() {
+    close_bme280();
+    interrupcao();
+}
 
 int main(int argc, char **argv){
 
-    bcm2835_setup();
+    signal(SIGINT, finish);
 
-    signal(SIGINT, interrupcao);
+    bcm2835_setup();
+    bme280_setup();
+
+    float temperature = 0, humidity = 0;
+
 
     ligar_lampada(1);
 
     while(1){
-        while(bcm2835_gpio_lev(SENSOR_PRESENCA_1) || bcm2835_gpio_lev(SENSOR_ABERTURA_1)) {
-            printf("SENSOR DE PRESENÇA ACIONADO\n");
-        }
+        get_current_time();
+        bme280_temperature(&temperature, &humidity);
+        printf("%f %f\n", temperature, humidity);
+
+        usleep(1000000);
     }
 
     return 0;
