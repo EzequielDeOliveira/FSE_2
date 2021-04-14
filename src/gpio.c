@@ -40,7 +40,7 @@ void ligar_lampada(int comando) {
     bcm2835_gpio_write(AR_2, comando);
 }
 
-void interrupcao(int sinal) {
+void interrupcao() {
     ligar_lampada(0);
     bcm2835_close();
     exit(0);

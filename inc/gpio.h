@@ -21,6 +21,6 @@
 
 void bcm2835_setup();
 void ligar_lampada(int comando);
-void interrupcao(int sinal);
+void interrupcao();
 
 #endif

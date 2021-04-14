@@ -5,7 +5,7 @@
 #include "csv.h"
 #include "bme280temperature.h"
 
-void finish() {
+void finish(int sinal) {
     close_bme280();
     interrupcao();
 }
