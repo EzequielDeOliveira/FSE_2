@@ -4,6 +4,7 @@
 #include "gpio.h"
 #include "csv.h"
 #include "bme280temperature.h"
+#include "server.h"
 
 void finish(int sinal) {
     close_bme280();
@@ -12,7 +13,7 @@ void finish(int sinal) {
 
 int main(int argc, char **argv){
 
-    signal(SIGINT, finish);
+/*     signal(SIGINT, finish);
 
     bcm2835_setup();
     bme280_setup();
@@ -28,7 +29,9 @@ int main(int argc, char **argv){
         printf("%f %f\n", temperature, humidity);
 
         usleep(1000000);
-    }
+    } */
+
+    receive_messages();
 
     return 0;
 }
