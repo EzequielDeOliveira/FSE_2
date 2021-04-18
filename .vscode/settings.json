@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "data.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "bme280temperature.h": "c",
+        "string.h": "c"
     }
 }

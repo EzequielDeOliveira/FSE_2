@@ -6,18 +6,20 @@
 #include "bme280temperature.h"
 #include "server.h"
 
-void finish(int sinal) {
+void finish(int sinal)
+{
     close_bme280();
     interrupcao();
 }
 
-int main(int argc, char **argv){
+int main(int argc, char **argv)
+{
 
-/*     signal(SIGINT, finish);
-
+    signal(SIGINT, finish);
     bcm2835_setup();
     bme280_setup();
 
+    /*     
     float temperature = 0, humidity = 0;
 
 
