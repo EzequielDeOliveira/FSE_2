@@ -21,7 +21,7 @@ void getbme280(int command)
     char buffer[LEN];
     char response[LEN];
 
-    char tamanhoMensagem = snprintf(buffer, 6, "%d", command);
+    tamanhoMensagem = snprintf(buffer, 6, "%d", command);
 
     if ((clienteSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
         printf("Erro no socket()");
