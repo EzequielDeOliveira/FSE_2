@@ -21,7 +21,7 @@ void TrataClientTCP(int socketClient) {
     }   
 }  
 
-void receive_messages(int argc, char *argv[]) {
+void receive_messages() {
     int servidorSocket;
     int socketCliente;
     struct sockaddr_in servidorAddr;

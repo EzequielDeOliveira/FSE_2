@@ -26,7 +26,7 @@ void getbme280(int command)
 
     IP_Servidor = IP_Server;
     servidorPorta = Port_Server;
-    mensagem = "0";
+    sprintf(mensagem, "%d", command);
 
     if ((clienteSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
         printf("Erro no socket()");
