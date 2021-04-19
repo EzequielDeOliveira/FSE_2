@@ -18,8 +18,8 @@ void TrataClientTCP(int socketClient)
 
     if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
         printf("Erro no recv()\n");
-
     sscanf(buffer, "%d", &command);
+    data = bme280_read();
     snprintf(response, 15, "%d %.2f %.2f", command, data.temperature, data.humidity);
 
     while (tamanhoRecebido > 0)

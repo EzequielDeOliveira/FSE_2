@@ -8,10 +8,10 @@
 
 #define LEN 16
 
-char *IP_Server = "192.168.0.52";
+char *IP_Server = "192.168.0.4";
 unsigned short Port_Server = 10115;
 
-void getbme280(int command)
+void send_command(int command)
 {
     int clienteSocket;
     struct sockaddr_in servidorAddr;
@@ -24,8 +24,8 @@ void getbme280(int command)
     int bytesRecebidos;
     int totalBytesRecebidos;
 
-    IP_Servidor = "192.168.1.21";
-    servidorPorta = 4001;
+    IP_Servidor = "192.168.0.4";
+    servidorPorta = 10115;
     sprintf(mensagem, "%d", command);
 
     if ((clienteSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
@@ -52,11 +52,16 @@ void getbme280(int command)
         printf("Não recebeu o total de bytes enviados\n");
     }
 
-    float temperature;
-    float humidity;
-    int command_received;
-    printf("%s\n", buffer);
-    sscanf(buffer, "%d %f %f", &command_received, &temperature, &humidity);
-    printf("%d %.2f %.2f", command_received, temperature, humidity);
+    if (command < 1)
+    {
+        float temperature;
+        float humidity;
+        int command_received;
+        printf("%s\n", buffer);
+        sscanf(buffer, "%d %f %f", &command_received, &temperature, &humidity);
+        printf("%d %.2f %.2f", command_received, temperature, humidity);
+    } else {
+        printf("%s\n", buffer);
+    }
     close(clienteSocket);
 }
