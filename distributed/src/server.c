@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "bme280temperature.h"
+#include <bme280.h>
 #include "gpio.h"
 
 void TrataClientTCP(int socketClient)
@@ -13,15 +13,14 @@ void TrataClientTCP(int socketClient)
     char response[16];
     int tamanhoRecebido;
     int command;
-    float temperature = 0, humidity = 0;
+    struct bme280_data data = bme280_read();
     ligar_lampada(1);
 
     if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
         printf("Erro no recv()\n");
 
     sscanf(buffer, "%d", &command);
-    snprintf(response, 15, "%d %.2f %.2f", command, temperature, humidity);
-    bme280_temperature(&temperature, &humidity);
+    snprintf(response, 15, "%d %.2f %.2f", command, data.temperature, data.humidity);
 
     while (tamanhoRecebido > 0)
     {
@@ -31,8 +30,8 @@ void TrataClientTCP(int socketClient)
         if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
             printf("Erro no recv()\n");
         sscanf(buffer, "%d", &command);
-        snprintf(response, 15, "%d %.2f %.2f", command, temperature, humidity);
-        bme280_temperature(&temperature, &humidity);
+        data = bme280_read();
+        snprintf(response, 15, "%d %.2f %.2f", command, data.temperature, data.humidity);
     }
 }
 

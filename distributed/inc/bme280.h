@@ -65,9 +65,9 @@ extern "C" {
 
 /*!
  * \ingroup bme280ApiInit
- * \page bme280_api_bme280_init bme280_init
+ * \page bme280_api_bme280_start bme280_start
  * \code
- * int8_t bme280_init(struct bme280_dev *dev);
+ * int8_t bme280_start(struct bme280_dev *dev);
  * \endcode
  * @details This API reads the chip-id of the sensor which is the first step to
  * verify the sensor and also calibrates the sensor
@@ -82,7 +82,7 @@ extern "C" {
  * @retval < 0 -> Fail.
  *
  */
-int8_t bme280_init(struct bme280_dev *dev);
+int8_t bme280_start(struct bme280_dev *dev);
 
 /**
  * \ingroup bme280
@@ -387,6 +387,9 @@ int8_t bme280_compensate_data(uint8_t sensor_comp,
  *
  */
 uint32_t bme280_cal_meas_delay(const struct bme280_settings *settings);
+
+void bme280_init();
+struct bme280_data bme280_read();
 
 #ifdef __cplusplus
 }

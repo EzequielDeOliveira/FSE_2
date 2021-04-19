@@ -401,7 +401,7 @@ static int8_t reload_device_settings(const struct bme280_settings *settings, str
  *  @brief This API is the entry point.
  *  It reads the chip-id and calibration data from the sensor.
  */
-int8_t bme280_init(struct bme280_dev *dev)
+int8_t bme280_start(struct bme280_dev *dev)
 {
     int8_t rslt;
 
@@ -1586,4 +1586,119 @@ static int8_t null_ptr_check(const struct bme280_dev *dev)
     }
 
     return rslt;
+}
+
+// MARK: - Driver expose
+
+int8_t user_i2c_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_ptr) {
+    struct identifier identificador;
+
+    identificador = *((struct identifier *)intf_ptr);
+
+    write(identificador.fd, &reg_addr, 1);
+    read(identificador.fd, data, len);
+
+    return 0;
+}
+
+int8_t user_i2c_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void *intf_ptr) {
+    uint8_t *buf;
+    struct identifier identificador;
+
+    identificador = *((struct identifier *)intf_ptr);
+
+    buf = malloc(len + 1);
+    buf[0] = reg_addr;
+    memcpy(buf + 1, data, len);
+    if (write(identificador.fd, buf, len + 1) < (uint16_t)len) {
+        return BME280_E_COMM_FAIL;
+    }
+
+    free(buf);
+
+    return BME280_OK;
+}
+
+void user_delay_us(uint32_t period, void *intf_ptr) {
+    usleep(period);
+}
+
+struct identifier id;
+
+void bme280_init() {
+    char interface[] = "/dev/i2c-1";
+
+    if ((id.fd = open(interface, O_RDWR)) < 0) {
+        fprintf(stderr, "Falha ao abrir o i2c.\n");
+        exit(1);
+    }
+
+    /* ME280_I2C_ADDR_PRIM: 0x76 */
+    id.dev_addr = BME280_I2C_ADDR_PRIM;
+
+    if (ioctl(id.fd, I2C_SLAVE, id.dev_addr) < 0) {
+        fprintf(stderr, "Falha ao adquirir comunicação com o I2C.\n");
+        exit(1);
+    }
+}
+
+struct bme280_data stream_sensor_data(struct bme280_dev *dev) {
+    int8_t rslt;
+    uint8_t settings_sel;
+    struct bme280_data data;
+
+    /* Recommended mode of operation: Indoor navigation */
+    dev->settings.osr_h = BME280_OVERSAMPLING_1X;
+    dev->settings.osr_p = BME280_OVERSAMPLING_16X;
+    dev->settings.osr_t = BME280_OVERSAMPLING_2X;
+    dev->settings.filter = BME280_FILTER_COEFF_16;
+    dev->settings.standby_time = BME280_STANDBY_TIME_62_5_MS;
+
+    settings_sel = BME280_OSR_PRESS_SEL;
+    settings_sel |= BME280_OSR_TEMP_SEL;
+    settings_sel |= BME280_OSR_HUM_SEL;
+    settings_sel |= BME280_STANDBY_SEL;
+    settings_sel |= BME280_FILTER_SEL;
+    rslt = bme280_set_sensor_settings(settings_sel, dev);
+    rslt = bme280_set_sensor_mode(BME280_NORMAL_MODE, dev);
+
+    /* Espera 1 segundo para realizar a medição */
+    dev->delay_us(100000, dev->intf_ptr);
+    rslt = bme280_get_sensor_data(BME280_TEMP | BME280_HUM, &data, dev);
+    if (rslt != BME280_OK) {
+        printf("Erro ao ler dados do sensor BME280 (código: %+d)...\n", (int) rslt);
+        struct bme280_data bme280;
+        bme280.temperature = 0;
+        bme280.humidity = 0;
+        bme280.pressure = 0;
+        return bme280;
+    }
+
+    return data;
+}
+
+struct bme280_data bme280_read() {
+    struct bme280_dev dev;
+
+    /* Variable to define the result */
+    int8_t rslt = BME280_OK;
+
+    /* Interface I2C */
+    dev.intf = BME280_I2C_INTF;
+    dev.read = user_i2c_read;
+    dev.write = user_i2c_write;
+    dev.delay_us = user_delay_us;
+    dev.intf_ptr = &id;
+
+    rslt = bme280_start(&dev);
+    if (rslt != BME280_OK) {
+        printf("Erro ao inicializar BME280...\n");
+        struct bme280_data bme280;
+        bme280.temperature = 0;
+        bme280.humidity = 0;
+        bme280.pressure = 0;
+        return bme280;
+    }
+
+    return stream_sensor_data(&dev);
 }
