@@ -6,6 +6,114 @@
 #include <unistd.h>
 #include "data.h"
 
+void handleSensor(int sensor)
+{
+    Data data = get_data();
+
+    switch (sensor)
+    {
+    case PRESENCE_SENSOR_1:
+        if (data.presences1 == 0)
+        {
+            data.presences1 = 1;
+        }
+        else
+        {
+
+            data.presences1 = 0;
+        }
+        break;
+
+    case PRESENCE_SENSOR_2:
+        if (data.presences2 == 0)
+        {
+            data.presences2 = 1;
+        }
+        else
+        {
+
+            data.presences2 = 0;
+        }
+        break;
+
+    case OPENING_SENSOR_1:
+        if (data.openings1 == 0)
+        {
+            data.openings1 = 1;
+        }
+        else
+        {
+            data.openings1 = 0;
+        }
+        break;
+
+    case OPENING_SENSOR_2:
+        if (data.openings2 == 0)
+        {
+            data.openings2 = 1;
+        }
+        else
+        {
+
+            data.openings2 = 0;
+        }
+        break;
+
+    case OPENING_SENSOR_3:
+        if (data.openings3 == 0)
+        {
+            data.openings3 = 1;
+        }
+        else
+        {
+
+            data.openings3 = 0;
+        }
+        break;
+
+    case OPENING_SENSOR_4:
+        if (data.openings4 == 0)
+        {
+            data.openings4 = 1;
+        }
+        else
+        {
+
+            data.openings4 = 0;
+        }
+        break;
+
+    case OPENING_SENSOR_5:
+        if (data.openings5 == 0)
+        {
+            data.openings5 = 1;
+        }
+        else
+        {
+
+            data.openings5 = 0;
+        }
+        break;
+
+    case OPENING_SENSOR_6:
+        if (data.openings6 == 0)
+        {
+            data.openings6 = 1;
+        }
+        else
+        {
+
+            data.openings6 = 0;
+        }
+        break;
+
+    default:
+        break;
+    }
+
+    set_data(data);
+}
+
 void TrataClientTCP(int socketClient)
 {
     char buffer[16];

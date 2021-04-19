@@ -7,6 +7,14 @@
 #define LAMP_4 22
 #define AIR_1 13
 #define AIR_2 19
+#define PRESENCE_SENSOR_1 25
+#define PRESENCE_SENSOR_2 26
+#define OPENING_SENSOR_1 05
+#define OPENING_SENSOR_2 06
+#define OPENING_SENSOR_3 12
+#define OPENING_SENSOR_4 16
+#define OPENING_SENSOR_5 20
+#define OPENING_SENSOR_6 21
 
 typedef struct
 {
