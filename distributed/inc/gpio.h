@@ -24,5 +24,6 @@ void turn_off_all();
 void turn_on(int device);
 void turn_off(int device);
 void interrupcao();
+void handleSensor();
 
 #endif

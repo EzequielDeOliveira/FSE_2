@@ -1,5 +1,5 @@
 #include "gpio.h"
-
+#include "server.h"
 
 void bcm2835_setup()
 {
@@ -42,12 +42,12 @@ int device_is_valide(int device)
 
 void turn_on(int device)
 {
-        bcm2835_gpio_write(device, 1);
+    bcm2835_gpio_write(device, 1);
 }
 
 void turn_off(int device)
 {
-        bcm2835_gpio_write(device, 0);
+    bcm2835_gpio_write(device, 0);
 }
 
 void turn_off_all()
@@ -58,6 +58,45 @@ void turn_off_all()
     bcm2835_gpio_write(LAMP_4, 0);
     bcm2835_gpio_write(AIR_1, 0);
     bcm2835_gpio_write(AIR_2, 0);
+}
+
+void handleSensor()
+{
+    while (1)
+    {
+        if (bcm2835_gpio_lev(PRESENCE_SENSOR_1))
+        {
+            send_command(PRESENCE_SENSOR_1);
+        }
+        else if (bcm2835_gpio_lev(PRESENCE_SENSOR_2))
+        {
+            send_command(PRESENCE_SENSOR_2);
+        }
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_1))
+        {
+            send_command(OPENING_SENSOR_1);
+        }
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_2))
+        {
+            send_command(OPENING_SENSOR_2;
+        }
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_3))
+        {
+            send_command(OPENING_SENSOR_3);
+        }
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_4))
+        {
+            send_command(OPENING_SENSOR_4);
+        }
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_5))
+        {
+            send_command(OPENING_SENSOR_5);
+        }
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_6))
+        {
+            send_command(OPENING_SENSOR_6);
+        }
+    }
 }
 
 void interrupcao()

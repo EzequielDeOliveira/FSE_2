@@ -20,7 +20,13 @@ int main(int argc, char **argv)
     bme280_init();
     init_data();
 
-    receive_messages();
+    pthread_t tid[2];
+
+    pthread_create(&tid[0], NULL, (void *)receive_messages, (void *)NULL);
+    pthread_create(&tid[0], NULL, (void *)handleSensor, (void *)NULL);
+
+    pthread_join(tid[0], NULL);
+    pthread_join(tid[1], NULL);
 
     return 0;
 }
