@@ -48,6 +48,13 @@
 #include <stdint.h>
 #include <stddef.h>
 #endif
+#include <stdio.h>
+#include <stdlib.h>
+#include <linux/i2c-dev.h>
+#include <fcntl.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/ioctl.h> 
 
 /********************************************************/
 /*! @name       Common macros               */
@@ -429,6 +436,16 @@ struct bme280_settings
 
     /*< standby time */
     uint8_t standby_time;
+};
+
+/* Structure that contains identifier details used in example */
+struct identifier
+{
+    /* Variable to hold device address */
+    uint8_t dev_addr;
+
+    /* Variable that contains file descriptor */
+    int8_t fd;
 };
 
 /*!
