@@ -19,7 +19,6 @@ void handleSensor(int sensor)
         }
         else
         {
-
             data.presences1 = 0;
         }
         break;
@@ -31,7 +30,6 @@ void handleSensor(int sensor)
         }
         else
         {
-
             data.presences2 = 0;
         }
         break;
@@ -54,7 +52,6 @@ void handleSensor(int sensor)
         }
         else
         {
-
             data.openings2 = 0;
         }
         break;
@@ -66,7 +63,6 @@ void handleSensor(int sensor)
         }
         else
         {
-
             data.openings3 = 0;
         }
         break;
@@ -78,7 +74,6 @@ void handleSensor(int sensor)
         }
         else
         {
-
             data.openings4 = 0;
         }
         break;
@@ -90,7 +85,6 @@ void handleSensor(int sensor)
         }
         else
         {
-
             data.openings5 = 0;
         }
         break;
@@ -102,7 +96,6 @@ void handleSensor(int sensor)
         }
         else
         {
-
             data.openings6 = 0;
         }
         break;
@@ -126,6 +119,7 @@ void TrataClientTCP(int socketClient)
     sscanf(buffer, "%d", &command);
     snprintf(response, 15, "%d", command);
     printf("%d", command);
+    handleSensor(command);
 
     while (tamanhoRecebido > 0)
     {

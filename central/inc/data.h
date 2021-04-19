@@ -9,8 +9,8 @@
 #define AIR_2 19
 #define PRESENCE_SENSOR_1 25
 #define PRESENCE_SENSOR_2 26
-#define OPENING_SENSOR_1 05
-#define OPENING_SENSOR_2 06
+#define OPENING_SENSOR_1 5
+#define OPENING_SENSOR_2 6
 #define OPENING_SENSOR_3 12
 #define OPENING_SENSOR_4 16
 #define OPENING_SENSOR_5 20
@@ -34,6 +34,8 @@ typedef struct
     int presences2;
     float humidity;
     float temperature;
+    int alarm;
+    int playing;
 } Data;
 
 void init_data();
