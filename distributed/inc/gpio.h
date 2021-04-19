@@ -20,7 +20,9 @@
 
 
 void bcm2835_setup();
-void ligar_lampada(int comando);
+void turn_off_all();
+void turn_on(int device);
+void turn_off(int device);
 void interrupcao();
 
 #endif

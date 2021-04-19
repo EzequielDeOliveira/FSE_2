@@ -14,11 +14,11 @@ void TrataClientTCP(int socketClient)
     int tamanhoRecebido;
     int command;
     struct bme280_data data = bme280_read();
-    ligar_lampada(1);
 
     if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
         printf("Erro no recv()\n");
     sscanf(buffer, "%d", &command);
+    turn_on(command);
     data = bme280_read();
     snprintf(response, 15, "%d %.2f %.2f", command, data.temperature, data.humidity);
 

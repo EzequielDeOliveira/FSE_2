@@ -1,7 +1,8 @@
 #include "gpio.h"
 
-void bcm2835_setup() {
-    if(!bcm2835_init())
+void bcm2835_setup()
+{
+    if (!bcm2835_init())
         exit(0);
 
     // Outputs
@@ -28,20 +29,41 @@ void bcm2835_setup() {
     bcm2835_gpio_fsel(OPENING_SENSOR_5, BCM2835_GPIO_FSEL_INPT);
     bcm2835_gpio_set_pud(OPENING_SENSOR_5, BCM2835_GPIO_PUD_UP);
     bcm2835_gpio_fsel(OPENING_SENSOR_6, BCM2835_GPIO_FSEL_INPT);
-    bcm2835_gpio_set_pud(OPENING_SENSOR_6, BCM2835_GPIO_PUD_UP);    
+    bcm2835_gpio_set_pud(OPENING_SENSOR_6, BCM2835_GPIO_PUD_UP);
 }
 
-void ligar_lampada(int comando) {
-    bcm2835_gpio_write(LAMP_1, comando);
-    bcm2835_gpio_write(LAMP_2, comando);
-    bcm2835_gpio_write(LAMP_3, comando);
-    bcm2835_gpio_write(LAMP_4, comando);
-    bcm2835_gpio_write(AIR_1, comando);
-    bcm2835_gpio_write(AIR_2, comando);
+int device_is_valide(int device)
+{
+    if (device == LAMP_1 || device == LAMP_2 || device == LAMP_3 || device == LAMP_4 || device == AIR_1 || device == AIR_2)
+        return 1;
+    return 0;
 }
 
-void interrupcao() {
-    ligar_lampada(0);
+void turn_on(int device)
+{
+    if (device_is_valide(device))
+        bcm2835_gpio_write(device, 1);
+}
+
+void turn_off(int device)
+{
+    if (device_is_valide(device))
+        bcm2835_gpio_write(device, 0);
+}
+
+void turn_off_all()
+{
+    bcm2835_gpio_write(LAMP_1, 0);
+    bcm2835_gpio_write(LAMP_2, 0);
+    bcm2835_gpio_write(LAMP_3, 0);
+    bcm2835_gpio_write(LAMP_4, 0);
+    bcm2835_gpio_write(AIR_1, 0);
+    bcm2835_gpio_write(AIR_2, 0);
+}
+
+void interrupcao()
+{
+    turn_off_all();
     bcm2835_close();
     exit(0);
 }
