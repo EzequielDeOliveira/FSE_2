@@ -1,5 +1,6 @@
 #include "gpio.h"
 #include "server.h"
+#include "data.h"
 
 void bcm2835_setup()
 {
@@ -62,39 +63,49 @@ void turn_off_all()
 
 void handleSensor()
 {
+    Data data = get_data();
+
     while (1)
     {
-        if (bcm2835_gpio_lev(PRESENCE_SENSOR_1))
+        if (bcm2835_gpio_lev(PRESENCE_SENSOR_1) != data.presences1 )
         {
             send_command(PRESENCE_SENSOR_1);
+            data.presences1 = bcm2835_gpio_lev(PRESENCE_SENSOR_1);
         }
-        else if (bcm2835_gpio_lev(PRESENCE_SENSOR_2))
+        else if (bcm2835_gpio_lev(PRESENCE_SENSOR_2) != data.presences2)
         {
             send_command(PRESENCE_SENSOR_2);
+            data.presences2 = bcm2835_gpio_lev(PRESENCE_SENSOR_2);
         }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_1))
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_1) != data.openings1)
         {
             send_command(OPENING_SENSOR_1);
+            data.openings1 = bcm2835_gpio_lev(OPENING_SENSOR_1);
         }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_2))
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_2)!= data.openings2)
         {
-            send_command(OPENING_SENSOR_2;
+            send_command(OPENING_SENSOR_2);
+            data.openings2 = bcm2835_gpio_lev(OPENING_SENSOR_2);
         }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_3))
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_3) != data.openings3)
         {
             send_command(OPENING_SENSOR_3);
+            data.openings3 = bcm2835_gpio_lev(OPENING_SENSOR_3);
         }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_4))
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_4) != data.openings4)
         {
             send_command(OPENING_SENSOR_4);
+            data.openings4 = bcm2835_gpio_lev(OPENING_SENSOR_4);
         }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_5))
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_5) != data.openings5)
         {
             send_command(OPENING_SENSOR_5);
+            data.openings5 = bcm2835_gpio_lev(OPENING_SENSOR_5);
         }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_6))
+        else if (bcm2835_gpio_lev(OPENING_SENSOR_6) != data.openings6)
         {
             send_command(OPENING_SENSOR_6);
+            data.openings6 = bcm2835_gpio_lev(OPENING_SENSOR_6);
         }
     }
 }
