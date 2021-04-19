@@ -6,6 +6,98 @@
 #include <unistd.h>
 #include <bme280.h>
 #include "gpio.h"
+#include "data.h"
+
+void handleDevices(int device)
+{
+    Data data = get_data();
+
+    switch (device)
+    {
+    case LAMP_1:
+        if (data.lamp1 == 0)
+        {
+            turn_on(device);
+            data.lamp1 = 1;
+        }
+        else
+        {
+
+            turn_off(device);
+            data.lamp1 = 0;
+        }
+        break;
+    case LAMP_2:
+        if (data.lamp2 == 0)
+        {
+            turn_on(device);
+            data.lamp2 = 1;
+        }
+        else
+        {
+
+            turn_off(device);
+            data.lamp2 = 0;
+        }
+        break;
+    case LAMP_3:
+        if (data.lamp3 == 0)
+        {
+            turn_on(device);
+            data.lamp3 = 1;
+        }
+        else
+        {
+
+            turn_off(device);
+            data.lamp3 = 0;
+        }
+        break;
+    case LAMP_4:
+        if (data.lamp4 == 0)
+        {
+            turn_on(device);
+            data.lamp4 = 1;
+        }
+        else
+        {
+
+            turn_off(device);
+            data.lamp4 = 0;
+        }
+        break;
+    case AIR_1:
+        if (data.air1 == 0)
+        {
+            turn_on(device);
+            data.air1 = 1;
+        }
+        else
+        {
+
+            turn_off(device);
+            data.air1 = 0;
+        }
+        break;
+    case AIR_2:
+        if (data.air2 == 0)
+        {
+            turn_on(device);
+            data.air2 = 1;
+        }
+        else
+        {
+
+            turn_off(device);
+            data.air2 = 0;
+        }
+        break;
+
+    default:
+        break;
+    }
+    set_data(data);
+}
 
 void TrataClientTCP(int socketClient)
 {
@@ -18,7 +110,7 @@ void TrataClientTCP(int socketClient)
     if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
         printf("Erro no recv()\n");
     sscanf(buffer, "%d", &command);
-    turn_on(command);
+    handleDevices(command);
     data = bme280_read();
     snprintf(response, 15, "%d %.2f %.2f", command, data.temperature, data.humidity);
 

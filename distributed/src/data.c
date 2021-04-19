@@ -17,8 +17,6 @@ void init_data() {
     data.openings6 = 0;
     data.presences1 = 0;
     data.presences2 = 0;
-    data.humidity = 0;
-    data.temperature = 0;
 }
 
 Data get_data() {

@@ -5,6 +5,7 @@
 #include "gpio.h"
 #include "csv.h"
 #include "server.h"
+#include "data.h"
 
 void finish(int sinal)
 {
@@ -17,6 +18,7 @@ int main(int argc, char **argv)
     signal(SIGINT, finish);
     bcm2835_setup();
     bme280_init();
+    init_data();
 
     receive_messages();
 

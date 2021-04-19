@@ -1,5 +1,6 @@
 #include "gpio.h"
 
+
 void bcm2835_setup()
 {
     if (!bcm2835_init())
@@ -41,13 +42,11 @@ int device_is_valide(int device)
 
 void turn_on(int device)
 {
-    if (device_is_valide(device))
         bcm2835_gpio_write(device, 1);
 }
 
 void turn_off(int device)
 {
-    if (device_is_valide(device))
         bcm2835_gpio_write(device, 0);
 }
 

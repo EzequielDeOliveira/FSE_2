@@ -1,13 +1,6 @@
 #ifndef DATA_H_
 #define DATA_H_
 
-#define LAMP_1 17
-#define LAMP_2 18
-#define LAMP_3 27
-#define LAMP_4 22
-#define AIR_1 13
-#define AIR_2 19
-
 typedef struct
 {
     int lamp1;
@@ -24,8 +17,6 @@ typedef struct
     int openings6;
     int presences1;
     int presences2;
-    float humidity;
-    float temperature;
 } Data;
 
 void init_data();
