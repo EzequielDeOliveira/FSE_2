@@ -8,7 +8,8 @@
 
 void handleSensor(int sensor)
 {
-    Data data = get_data();
+    printf("(SERVER) HANDLE SENSOR\n");
+    /* Data data = get_data();
 
     switch (sensor)
     {
@@ -104,7 +105,7 @@ void handleSensor(int sensor)
         break;
     }
 
-    set_data(data);
+    set_data(data); */
 }
 
 void TrataClientTCP(int socketClient)
@@ -115,19 +116,19 @@ void TrataClientTCP(int socketClient)
     int command;
 
     if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
-        printf("Erro no recv()\n");
+        printf("(SERVER) Erro no recv() SERVER\n");
     sscanf(buffer, "%d", &command);
     snprintf(response, 15, "%d", command);
-    printf("%d", command);
+    printf("(SERVER) %d SERVER RECEIVED\n", command);
     handleSensor(command);
 
     while (tamanhoRecebido > 0)
     {
         if (send(socketClient, response, 16 - 1, 0) != 15)
-            printf("Erro no envio - sends()\n");
+            printf("(SERVER) Erro no envio - sends() SERVER\n");
 
         if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
-            printf("Erro no recv()\n");
+            printf("(SERVER) Erro no recv() SERVER\n");
         sscanf(buffer, "%d", &command);
         snprintf(response, 15, "%d", command);
     }
@@ -145,7 +146,7 @@ void receive_messages()
     servidorPorta = 10015;
 
     if ((servidorSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
-        printf("falha no socker do Servidor\n");
+        printf("(SERVER) falha no socker do Servidor\n");
 
     memset(&servidorAddr, 0, sizeof(servidorAddr));
     servidorAddr.sin_family = AF_INET;
@@ -153,10 +154,10 @@ void receive_messages()
     servidorAddr.sin_port = htons(servidorPorta);
 
     if (bind(servidorSocket, (struct sockaddr *)&servidorAddr, sizeof(servidorAddr)) < 0)
-        printf("Falha no Bind\n");
+        printf("(SERVER) Falha no Bind\n");
 
     if (listen(servidorSocket, 10) < 0)
-        printf("Falha no Listen\n");
+        printf("(SERVER) Falha no Listen\n");
 
     while (1)
     {
@@ -165,9 +166,9 @@ void receive_messages()
                  servidorSocket,
                  (struct sockaddr *)&clienteAddr,
                  &clienteLength)) < 0)
-            printf("Falha no Accept\n");
+            printf("(SERVER) Falha no Accept\n");
 
-        printf("Conexão do Cliente %s\n", inet_ntoa(clienteAddr.sin_addr));
+        printf("(SERVER) Conexão do Cliente %s\n", inet_ntoa(clienteAddr.sin_addr));
 
         TrataClientTCP(socketCliente);
         close(socketCliente);
