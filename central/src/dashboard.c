@@ -85,8 +85,10 @@ void render_input_menu()
     /* Create items */
     n_choices = ARRAY_SIZE(choices);
     my_items = (ITEM **)calloc(n_choices, sizeof(ITEM *));
-    for (i = 0; i < n_choices; ++i)
-        my_items[i] = new_item(choices[i], device_status(choices[i]) == 1 ? "ON" : "OFF");
+    for (i = 0; i < n_choices; ++i){
+        char *state = device_status(choices[i]) == 1 ? "ON" : "OFF";
+        my_items[i] = new_item(choices[i], state);
+    }
 
     /* Crate menu */
     my_menu = new_menu((ITEM **)my_items);
