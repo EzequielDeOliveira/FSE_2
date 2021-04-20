@@ -16,17 +16,10 @@ int main(int argc, char **argv)
 {
 
     signal(SIGINT, finish);
-    bcm2835_setup();
     bme280_init();
     init_data();
-
-    pthread_t tid[2];
-
-    pthread_create(&tid[0], NULL, (void *)receive_messages, (void *)NULL);
-    pthread_create(&tid[0], NULL, (void *)handleSensor, (void *)NULL);
-
-    pthread_join(tid[0], NULL);
-    pthread_join(tid[1], NULL);
-
+    gpio_setup();
+    
+    receive_messages();
     return 0;
 }

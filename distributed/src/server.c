@@ -17,78 +17,78 @@ void handleDevices(int device)
     case LAMP_1:
         if (data.lamp1 == 0)
         {
-            turn_on(device);
+            change_state(device, 1);
             data.lamp1 = 1;
         }
         else
         {
 
-            turn_off(device);
+            change_state(device, 0);
             data.lamp1 = 0;
         }
         break;
     case LAMP_2:
         if (data.lamp2 == 0)
         {
-            turn_on(device);
+            change_state(device);
             data.lamp2 = 1;
         }
         else
         {
 
-            turn_off(device);
+            change_state(device, 0);
             data.lamp2 = 0;
         }
         break;
     case LAMP_3:
         if (data.lamp3 == 0)
         {
-            turn_on(device);
+            change_state(device);
             data.lamp3 = 1;
         }
         else
         {
 
-            turn_off(device);
+            change_state(device, 0);
             data.lamp3 = 0;
         }
         break;
     case LAMP_4:
         if (data.lamp4 == 0)
         {
-            turn_on(device);
+            change_state(device);
             data.lamp4 = 1;
         }
         else
         {
 
-            turn_off(device);
+            change_state(device, 0);
             data.lamp4 = 0;
         }
         break;
     case AIR_1:
         if (data.air1 == 0)
         {
-            turn_on(device);
+            change_state(device);
             data.air1 = 1;
         }
         else
         {
 
-            turn_off(device);
+            change_state(device, 0);
             data.air1 = 0;
         }
         break;
     case AIR_2:
         if (data.air2 == 0)
         {
-            turn_on(device);
+            change_state(device);
             data.air2 = 1;
         }
         else
         {
 
-            turn_off(device);
+            change_state(device, 0);
             data.air2 = 0;
         }
         break;

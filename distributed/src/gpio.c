@@ -1,38 +1,7 @@
 #include "gpio.h"
-#include "server.h"
 #include "data.h"
-
-void bcm2835_setup()
-{
-    if (!bcm2835_init())
-        exit(0);
-
-    // Outputs
-    bcm2835_gpio_fsel(LAMP_1, BCM2835_GPIO_FSEL_OUTP);
-    bcm2835_gpio_fsel(LAMP_2, BCM2835_GPIO_FSEL_OUTP);
-    bcm2835_gpio_fsel(LAMP_3, BCM2835_GPIO_FSEL_OUTP);
-    bcm2835_gpio_fsel(LAMP_4, BCM2835_GPIO_FSEL_OUTP);
-    bcm2835_gpio_fsel(AIR_1, BCM2835_GPIO_FSEL_OUTP);
-    bcm2835_gpio_fsel(AIR_2, BCM2835_GPIO_FSEL_OUTP);
-
-    // Inputs
-    bcm2835_gpio_fsel(PRESENCE_SENSOR_1, BCM2835_GPIO_FSEL_INPT);
-    bcm2835_gpio_set_pud(PRESENCE_SENSOR_1, BCM2835_GPIO_PUD_UP);
-    bcm2835_gpio_fsel(PRESENCE_SENSOR_2, BCM2835_GPIO_FSEL_INPT);
-    bcm2835_gpio_set_pud(PRESENCE_SENSOR_2, BCM2835_GPIO_PUD_UP);
-    bcm2835_gpio_fsel(OPENING_SENSOR_1, BCM2835_GPIO_FSEL_INPT);
-    bcm2835_gpio_set_pud(OPENING_SENSOR_1, BCM2835_GPIO_PUD_UP);
-    bcm2835_gpio_fsel(OPENING_SENSOR_2, BCM2835_GPIO_FSEL_INPT);
-    bcm2835_gpio_set_pud(OPENING_SENSOR_2, BCM2835_GPIO_PUD_UP);
-    bcm2835_gpio_fsel(OPENING_SENSOR_3, BCM2835_GPIO_FSEL_INPT);
-    bcm2835_gpio_set_pud(OPENING_SENSOR_3, BCM2835_GPIO_PUD_UP);
-    bcm2835_gpio_fsel(OPENING_SENSOR_4, BCM2835_GPIO_FSEL_INPT);
-    bcm2835_gpio_set_pud(OPENING_SENSOR_4, BCM2835_GPIO_PUD_UP);
-    bcm2835_gpio_fsel(OPENING_SENSOR_5, BCM2835_GPIO_FSEL_INPT);
-    bcm2835_gpio_set_pud(OPENING_SENSOR_5, BCM2835_GPIO_PUD_UP);
-    bcm2835_gpio_fsel(OPENING_SENSOR_6, BCM2835_GPIO_FSEL_INPT);
-    bcm2835_gpio_set_pud(OPENING_SENSOR_6, BCM2835_GPIO_PUD_UP);
-}
+#include "gpio.h"
+#include "client.h"
 
 int device_is_valide(int device)
 {
@@ -41,78 +10,96 @@ int device_is_valide(int device)
     return 0;
 }
 
-void turn_on(int device)
+void handle_presence_1()
 {
-    bcm2835_gpio_write(device, 1);
+    send_command(PRESENCE_SENSOR_1);
 }
 
-void turn_off(int device)
+void handle_presence_2()
 {
-    bcm2835_gpio_write(device, 0);
+    send_command(PRESENCE_SENSOR_2);
+}
+
+void handle_opening_1()
+{
+    send_command(OPENING_SENSOR_1);
+}
+
+void handle_opening_2()
+{
+    send_command(OPENING_SENSOR_2);
+}
+
+void handle_opening_3()
+{
+    send_command(OPENING_SENSOR_3);
+}
+
+void handle_opening_4()
+{
+    send_command(OPENING_SENSOR_4);
+}
+
+void handle_opening_5()
+{
+    send_command(OPENING_SENSOR_5);
+}
+
+void handle_opening_6()
+{
+    send_command(OPENING_SENSOR_6);
+}
+
+void gpio_setup()
+{
+    wiringPiSetup();
+
+    pinMode(PRESENCE_SENSOR_1, OUTPUT);
+    wiringPiISR(PRESENCE_SENSOR_1, INT_EDGE_BOTH, &handle_presence_1);
+
+    pinMode(PRESENCE_SENSOR_2, OUTPUT);
+    wiringPiISR(PRESENCE_SENSOR_2, INT_EDGE_BOTH, &handle_presence_2);
+
+    pinMode(OPENING_SENSOR_1, OUTPUT);
+    wiringPiISR(OPENING_SENSOR_1, INT_EDGE_BOTH, &handle_opening_1);
+
+    pinMode(OPENING_SENSOR_2, OUTPUT);
+    wiringPiISR(OPENING_SENSOR_2, INT_EDGE_BOTH, &handle_opening_2);
+
+    pinMode(OPENING_SENSOR_3, OUTPUT);
+    wiringPiISR(OPENING_SENSOR_3, INT_EDGE_BOTH, &handle_opening_3);
+
+    pinMode(OPENING_SENSOR_4, OUTPUT);
+    wiringPiISR(OPENING_SENSOR_4, INT_EDGE_BOTH, &handle_opening_4);
+
+    pinMode(OPENING_SENSOR_5, OUTPUT);
+    wiringPiISR(OPENING_SENSOR_5, INT_EDGE_BOTH, &handle_opening_5);
+
+    pinMode(OPENING_SENSOR_6, OUTPUT);
+    wiringPiISR(OPENING_SENSOR_6, INT_EDGE_BOTH, &handle_opening_6);
+}
+
+void change_state(int device, int status)
+{
+    device_is_valide(device)
+    {
+        pinMode(device, OUTPUT);
+        digitalWrite(device, state);
+    }
 }
 
 void turn_off_all()
 {
-    bcm2835_gpio_write(LAMP_1, 0);
-    bcm2835_gpio_write(LAMP_2, 0);
-    bcm2835_gpio_write(LAMP_3, 0);
-    bcm2835_gpio_write(LAMP_4, 0);
-    bcm2835_gpio_write(AIR_1, 0);
-    bcm2835_gpio_write(AIR_2, 0);
-}
-
-void handleSensor()
-{
-    Data data = get_data();
-
-    while (1)
-    {
-        if (bcm2835_gpio_lev(PRESENCE_SENSOR_1) != data.presences1 )
-        {
-            send_command(PRESENCE_SENSOR_1);
-            data.presences1 = bcm2835_gpio_lev(PRESENCE_SENSOR_1);
-        }
-        else if (bcm2835_gpio_lev(PRESENCE_SENSOR_2) != data.presences2)
-        {
-            send_command(PRESENCE_SENSOR_2);
-            data.presences2 = bcm2835_gpio_lev(PRESENCE_SENSOR_2);
-        }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_1) != data.openings1)
-        {
-            send_command(OPENING_SENSOR_1);
-            data.openings1 = bcm2835_gpio_lev(OPENING_SENSOR_1);
-        }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_2)!= data.openings2)
-        {
-            send_command(OPENING_SENSOR_2);
-            data.openings2 = bcm2835_gpio_lev(OPENING_SENSOR_2);
-        }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_3) != data.openings3)
-        {
-            send_command(OPENING_SENSOR_3);
-            data.openings3 = bcm2835_gpio_lev(OPENING_SENSOR_3);
-        }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_4) != data.openings4)
-        {
-            send_command(OPENING_SENSOR_4);
-            data.openings4 = bcm2835_gpio_lev(OPENING_SENSOR_4);
-        }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_5) != data.openings5)
-        {
-            send_command(OPENING_SENSOR_5);
-            data.openings5 = bcm2835_gpio_lev(OPENING_SENSOR_5);
-        }
-        else if (bcm2835_gpio_lev(OPENING_SENSOR_6) != data.openings6)
-        {
-            send_command(OPENING_SENSOR_6);
-            data.openings6 = bcm2835_gpio_lev(OPENING_SENSOR_6);
-        }
-    }
+    change_state(LAMP_1, LOW);
+    change_state(LAMP_2, LOW);
+    change_state(LAMP_3, LOW);
+    change_state(LAMP_4, LOW);
+    change_state(AIR_1, LOW);
+    change_state(AIR_2, LOW);
 }
 
 void interrupcao()
 {
     turn_off_all();
-    bcm2835_close();
     exit(0);
 }
