@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "data.h"
+#include "csv.h"
 
 void handleSensor(int sensor)
 {
@@ -17,10 +18,12 @@ void handleSensor(int sensor)
         if (data.presences1 == 0)
         {
             data.presences1 = 1;
+            write_csv(PRESENCE_SENSOR_1, 1);
         }
         else
         {
             data.presences1 = 0;
+            write_csv(PRESENCE_SENSOR_1, 0);
         }
         break;
 
@@ -28,10 +31,12 @@ void handleSensor(int sensor)
         if (data.presences2 == 0)
         {
             data.presences2 = 1;
+            write_csv(PRESENCE_SENSOR_2, 1);
         }
         else
         {
             data.presences2 = 0;
+            write_csv(PRESENCE_SENSOR_2, 0);
         }
         break;
 
@@ -39,10 +44,12 @@ void handleSensor(int sensor)
         if (data.openings1 == 0)
         {
             data.openings1 = 1;
+            write_csv(OPENING_SENSOR_1, 1);
         }
         else
         {
             data.openings1 = 0;
+            write_csv(OPENING_SENSOR_1, 0);
         }
         break;
 
@@ -50,10 +57,12 @@ void handleSensor(int sensor)
         if (data.openings2 == 0)
         {
             data.openings2 = 1;
+            write_csv(OPENING_SENSOR_2, 1);
         }
         else
         {
             data.openings2 = 0;
+            write_csv(OPENING_SENSOR_2, 0);
         }
         break;
 
@@ -61,10 +70,12 @@ void handleSensor(int sensor)
         if (data.openings3 == 0)
         {
             data.openings3 = 1;
+            write_csv(OPENING_SENSOR_3, 1);
         }
         else
         {
             data.openings3 = 0;
+            write_csv(OPENING_SENSOR_3, 0);
         }
         break;
 
@@ -72,10 +83,12 @@ void handleSensor(int sensor)
         if (data.openings4 == 0)
         {
             data.openings4 = 1;
+            write_csv(OPENING_SENSOR_4, 1);
         }
         else
         {
             data.openings4 = 0;
+            write_csv(OPENING_SENSOR_4, 0);
         }
         break;
 
@@ -83,10 +96,12 @@ void handleSensor(int sensor)
         if (data.openings5 == 0)
         {
             data.openings5 = 1;
+            write_csv(OPENING_SENSOR_5, 1);
         }
         else
         {
             data.openings5 = 0;
+            write_csv(OPENING_SENSOR_5, 0);
         }
         break;
 
@@ -94,10 +109,12 @@ void handleSensor(int sensor)
         if (data.openings6 == 0)
         {
             data.openings6 = 1;
+            write_csv(OPENING_SENSOR_6, 1);
         }
         else
         {
             data.openings6 = 0;
+            write_csv(OPENING_SENSOR_6, 0);
         }
         break;
 
