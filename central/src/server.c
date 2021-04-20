@@ -9,7 +9,7 @@
 void handleSensor(int sensor)
 {
     printf("(SERVER) HANDLE SENSOR\n");
-    /* Data data = get_data();
+    Data data = get_data();
 
     switch (sensor)
     {
@@ -105,7 +105,7 @@ void handleSensor(int sensor)
         break;
     }
 
-    set_data(data); */
+    set_data(data);
 }
 
 void TrataClientTCP(int socketClient)

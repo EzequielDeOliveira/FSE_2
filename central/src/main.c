@@ -4,6 +4,7 @@
 #include "client.h"
 #include "csv.h"
 #include "server.h"
+#include "data.h"
 
 void menu()
 {
@@ -18,7 +19,7 @@ void getbme()
 {
     while (1)
     {
-        send_command(0);
+        send_command(-1);
         get_current_time();
         usleep(700000);
     }
@@ -27,6 +28,7 @@ void getbme()
 int main(int argc, char **argv)
 {
     pthread_t tid[3];
+    init_data();
 
     pthread_create(&tid[0], NULL, (void *)receive_messages, (void *)NULL);
     pthread_create(&tid[0], NULL, (void *)menu, (void *)NULL);

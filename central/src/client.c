@@ -52,7 +52,7 @@ void send_command(int command)
         printf("(CLIENT) Não recebeu o total de bytes enviados\n");
     }
 
-    if (command < 1)
+    if (command < 0)
     {
         float temperature;
         float humidity;

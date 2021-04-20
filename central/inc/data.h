@@ -1,20 +1,20 @@
 #ifndef DATA_H_
 #define DATA_H_
 
-#define LAMP_1 17
-#define LAMP_2 18
-#define LAMP_3 27
-#define LAMP_4 22
-#define AIR_1 13
-#define AIR_2 19
-#define PRESENCE_SENSOR_1 25
-#define PRESENCE_SENSOR_2 26
-#define OPENING_SENSOR_1 5
-#define OPENING_SENSOR_2 6
-#define OPENING_SENSOR_3 12
-#define OPENING_SENSOR_4 16
-#define OPENING_SENSOR_5 20
-#define OPENING_SENSOR_6 21
+#define LAMP_1 0 
+#define LAMP_2 1
+#define LAMP_3 2
+#define LAMP_4 3
+#define AIR_1 23
+#define AIR_2 24
+#define PRESENCE_SENSOR_1 6
+#define PRESENCE_SENSOR_2 25
+#define OPENING_SENSOR_1 21
+#define OPENING_SENSOR_2 22
+#define OPENING_SENSOR_3 26
+#define OPENING_SENSOR_4 27
+#define OPENING_SENSOR_5 28
+#define OPENING_SENSOR_6 29
 
 typedef struct
 {

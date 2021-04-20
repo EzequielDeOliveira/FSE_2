@@ -21,6 +21,7 @@ void init_data()
     data.presences2 = 0;
     data.humidity = 0;
     data.temperature = 0;
+    data.alarm = 1;
 }
 
 Data get_data()
@@ -31,17 +32,19 @@ Data get_data()
 void set_data(Data _data)
 {
 
-    if (data.openings1 == 1 ||
-        data.openings2 == 1 ||
-        data.openings3 == 1 ||
-        data.openings4 == 1 ||
-        data.openings5 == 1 ||
-        data.openings6 == 1 ||
-        data.presences1 == 1 ||
-        data.presences2 == 1)
+    if (_data.openings1 == 1 ||
+        _data.openings2 == 1 ||
+        _data.openings3 == 1 ||
+        _data.openings4 == 1 ||
+        _data.openings5 == 1 ||
+        _data.openings6 == 1 ||
+        _data.presences1 == 1 ||
+        _data.presences2 == 1)
     {
+        _data.playing = 1;
         turn_on_alarm();
     } else {
+        _data.playing = 0;
         turn_off_alarm();
     }
 
