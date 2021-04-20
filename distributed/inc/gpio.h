@@ -19,7 +19,7 @@
 #define OPENING_SENSOR_6 29
 
 void gpio_setup();
-void change_state(int device, int status);
+void change_state(int device, int state);
 void interrupcao();
 
 #endif

@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "gpio.h"
 #include "data.h"
 #include "gpio.h"
@@ -79,9 +80,9 @@ void gpio_setup()
     wiringPiISR(OPENING_SENSOR_6, INT_EDGE_BOTH, &handle_opening_6);
 }
 
-void change_state(int device, int status)
+void change_state(int device, int state)
 {
-    device_is_valide(device)
+    if(device_is_valide(device))
     {
         pinMode(device, OUTPUT);
         digitalWrite(device, state);

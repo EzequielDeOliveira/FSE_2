@@ -30,7 +30,7 @@ void handleDevices(int device)
     case LAMP_2:
         if (data.lamp2 == 0)
         {
-            change_state(device);
+            change_state(device, 1);
             data.lamp2 = 1;
         }
         else
@@ -43,7 +43,7 @@ void handleDevices(int device)
     case LAMP_3:
         if (data.lamp3 == 0)
         {
-            change_state(device);
+            change_state(device, 1);
             data.lamp3 = 1;
         }
         else
@@ -56,7 +56,7 @@ void handleDevices(int device)
     case LAMP_4:
         if (data.lamp4 == 0)
         {
-            change_state(device);
+            change_state(device, 1);
             data.lamp4 = 1;
         }
         else
@@ -69,7 +69,7 @@ void handleDevices(int device)
     case AIR_1:
         if (data.air1 == 0)
         {
-            change_state(device);
+            change_state(device, 1);
             data.air1 = 1;
         }
         else
@@ -82,7 +82,7 @@ void handleDevices(int device)
     case AIR_2:
         if (data.air2 == 0)
         {
-            change_state(device);
+            change_state(device, 1);
             data.air2 = 1;
         }
         else
