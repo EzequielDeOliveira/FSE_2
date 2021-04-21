@@ -391,6 +391,7 @@ int dashboard()
     start_color();
     cbreak();
     noecho();
+    clear();
     curs_set(0);
     keypad(stdscr, TRUE);
     init_pair(1, COLOR_RED, COLOR_BLACK);
