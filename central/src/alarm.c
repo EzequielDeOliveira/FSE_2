@@ -16,12 +16,9 @@ void* play() {
 
 void turn_on_alarm() {
   Data data = get_data();
-
-  if (data.alarm == 1) {
     playing = 1;
     pthread_t alarm;
     pthread_create(&alarm, NULL, play, NULL);
-  }
 }
 
 void turn_off_alarm() {

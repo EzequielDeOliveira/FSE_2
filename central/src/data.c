@@ -43,7 +43,7 @@ void set_data(Data _data)
         _data.presences1 == 1 ||
         _data.presences2 == 1)
     {
-        if (data.playing == 0)
+        if (data.playing == 0 && data.alarm == 1)
         {
             _data.playing = 1;
             turn_on_alarm();
