@@ -9,53 +9,49 @@
 
 #define LEN 16
 
-char *IP_Server = "192.168.0.53";
-unsigned short Port_Server = 10015;
+#define IP_Server "192.168.0.53"
+#define Port_Server 10015
 
 void send_command(int command, int state)
 {
-    int clienteSocket;
-    struct sockaddr_in servidorAddr;
-    unsigned short servidorPorta;
-    char *IP_Servidor;
-    char mensagem[16];
+    int clientSocket;
+    struct sockaddr_in serverAddr;
+    char message[16];
     char buffer[16];
-    unsigned int tamanhoMensagem;
+    unsigned int messageLength;
 
     int bytesRecebidos;
     int totalBytesRecebidos;
 
-    IP_Servidor = "192.168.0.53";
-    servidorPorta = 10015;
-    sprintf(mensagem, "%d %d", command, state);
+    sprintf(message, "%d %d", command, state);
 
-    if ((clienteSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+    if ((clientSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
     {
         printf("Erro no socket()");
         finishWithError(0);
     }
 
-    memset(&servidorAddr, 0, sizeof(servidorAddr));
-    servidorAddr.sin_family = AF_INET;
-    servidorAddr.sin_addr.s_addr = inet_addr(IP_Servidor);
-    servidorAddr.sin_port = htons(servidorPorta);
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_addr.s_addr = inet_addr(IP_Server);
+    serverAddr.sin_port = htons(Port_Server);
 
-    if (connect(clienteSocket, (struct sockaddr *)&servidorAddr,
-                sizeof(servidorAddr)) < 0)
+    if (connect(clientSocket, (struct sockaddr *)&serverAddr,
+                sizeof(serverAddr)) < 0)
     {
         printf("Erro no connect()\n");
         finishWithError(0);
     }
 
-    tamanhoMensagem = strlen(mensagem);
+    messageLength = strlen(message);
 
-    if (send(clienteSocket, mensagem, tamanhoMensagem, 0) != tamanhoMensagem)
+    if (send(clientSocket, message, messageLength, 0) != messageLength)
     {
         printf("Erro no envio: numero de bytes enviados diferente do esperado\n");
         finishWithError(0);
     }
 
-    totalBytesRecebidos = recv(clienteSocket, buffer, 16 - 1, 0);
+    totalBytesRecebidos = recv(clientSocket, buffer, 16 - 1, 0);
 
     if (totalBytesRecebidos < 1)
     {
@@ -65,5 +61,5 @@ void send_command(int command, int state)
 
     printf("%s\n", buffer);
 
-    close(clienteSocket);
+    close(clientSocket);
 }

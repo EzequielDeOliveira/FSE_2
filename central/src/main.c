@@ -8,7 +8,7 @@
 #include "data.h"
 #include "dashboard.h"
 #include "alarm.h"
-#include "quit.c"
+#include "quit.h"
 
 void menu()
 {

@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "random": "c",
-        "menu.h": "c",
-        "dashboard.h": "c",
-        "stdlib.h": "c"
-    }
-}
