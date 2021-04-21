@@ -13,42 +13,58 @@ int device_is_valide(int device)
 
 void handle_presence_1()
 {
-    send_command(PRESENCE_SENSOR_1);
+    int state = digitalRead(PRESENCE_SENSOR_1) ? 1: 0;
+    printf("Estado %d\n", state);
+    send_command(PRESENCE_SENSOR_1, state);
 }
 
 void handle_presence_2()
 {
-    send_command(PRESENCE_SENSOR_2);
+    int state = digitalRead(PRESENCE_SENSOR_2);
+    printf("Estado %d\n", state);
+    send_command(PRESENCE_SENSOR_2, state);
 }
 
 void handle_opening_1()
 {
-    send_command(OPENING_SENSOR_1);
+    int state = digitalRead(OPENING_SENSOR_1);
+    printf("Estado %d\n", state);
+    send_command(OPENING_SENSOR_1, state);
 }
 
 void handle_opening_2()
 {
-    send_command(OPENING_SENSOR_2);
+    int state = digitalRead(OPENING_SENSOR_2);
+    printf("Estado %d\n", state);
+    send_command(OPENING_SENSOR_2, state);
 }
 
 void handle_opening_3()
 {
-    send_command(OPENING_SENSOR_3);
+    int state = digitalRead(OPENING_SENSOR_3);
+    printf("Estado %d\n", state);
+    send_command(OPENING_SENSOR_3, state);
 }
 
 void handle_opening_4()
 {
-    send_command(OPENING_SENSOR_4);
+    int state = digitalRead(OPENING_SENSOR_4);
+    printf("Estado %d\n", state);
+    send_command(OPENING_SENSOR_4, state);
 }
 
 void handle_opening_5()
 {
-    send_command(OPENING_SENSOR_5);
+    int state = digitalRead(OPENING_SENSOR_5);
+    printf("Estado %d\n", state);
+    send_command(OPENING_SENSOR_5, state);
 }
 
 void handle_opening_6()
 {
-    send_command(OPENING_SENSOR_6);
+    int state = digitalRead(OPENING_SENSOR_6);
+    printf("Estado %d\n", state);
+    send_command(OPENING_SENSOR_6, state);
 }
 
 void gpio_setup()

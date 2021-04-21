@@ -11,7 +11,7 @@
 char *IP_Server = "192.168.0.53";
 unsigned short Port_Server = 10015;
 
-void send_command(int command)
+void send_command(int command, int state)
 {
     int clienteSocket;
     struct sockaddr_in servidorAddr;
@@ -26,7 +26,7 @@ void send_command(int command)
 
     IP_Servidor = "192.168.0.53";
     servidorPorta = 10015;
-    sprintf(mensagem, "%d", command);
+    sprintf(mensagem, "%d %d", command, state);
 
     if ((clienteSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
         printf("Erro no socket()");

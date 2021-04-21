@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <bme280.h>
 #include "gpio.h"
-#include "csv.h"
 #include "server.h"
 #include "data.h"
 

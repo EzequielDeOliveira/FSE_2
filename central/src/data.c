@@ -23,6 +23,7 @@ void init_data()
     data.humidity = 0;
     data.temperature = 0;
     data.alarm = 0;
+    data.playing = 0;
 }
 
 Data get_data()
@@ -53,7 +54,6 @@ void set_data(Data _data)
         _data.playing = 0;
         turn_off_alarm();
     }
-
 
     data = _data;
 

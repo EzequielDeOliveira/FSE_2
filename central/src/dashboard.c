@@ -24,7 +24,9 @@ char *sensors[] = {
     "Sensor Abertura 03 (Porta Sala)",
     "Sensor Abertura 04 (Janela Sala)",
     "Sensor Abertura 05 (Janela Quarto 01)",
-    "Sensor Abertura 06 (Janela Quarto 02)"};
+    "Sensor Abertura 06 (Janela Quarto 02)",
+    "Alarme Disparado"
+    };
 
 ITEM **my_items;
 ITEM *cur_item;
@@ -77,7 +79,7 @@ void change_device_status(ITEM *item)
     if (strcmp(item_name(item), choices[0]) == 0)
     {
         send_command(LAMP_1);
-        if (data.lamp1 == 0)
+        if (data.lamp1 == 1)
         {
             item->description.str = "OFF";
             data.lamp1 = 0;
@@ -91,7 +93,7 @@ void change_device_status(ITEM *item)
     else if (strcmp(item_name(item), choices[1]) == 0)
     {
         send_command(LAMP_2);
-        if (data.lamp2 == 0)
+        if (data.lamp2 == 1)
         {
             item->description.str = "OFF";
             data.lamp2 = 0;
@@ -105,7 +107,7 @@ void change_device_status(ITEM *item)
     else if (strcmp(item_name(item), choices[2]) == 0)
     {
         send_command(LAMP_3);
-        if (data.lamp3 == 0)
+        if (data.lamp3 == 1)
         {
             item->description.str = "OFF";
             data.lamp3 = 0;
@@ -119,7 +121,7 @@ void change_device_status(ITEM *item)
     else if (strcmp(item_name(item), choices[3]) == 0)
     {
         send_command(LAMP_4);
-        if (data.lamp4 == 0)
+        if (data.lamp4 == 1)
         {
             item->description.str = "OFF";
             data.lamp4 = 0;
@@ -133,7 +135,7 @@ void change_device_status(ITEM *item)
     else if (strcmp(item_name(item), choices[4]) == 0)
     {
         send_command(AIR_1);
-        if (data.air1 == 0)
+        if (data.air1 == 1)
         {
             item->description.str = "OFF";
             data.air1 = 0;
@@ -147,7 +149,7 @@ void change_device_status(ITEM *item)
     else if (strcmp(item_name(item), choices[5]) == 0)
     {
         send_command(AIR_2);
-        if (data.air2 == 0)
+        if (data.air2 == 1)
         {
             item->description.str = "OFF";
             data.air2 = 0;
@@ -160,7 +162,7 @@ void change_device_status(ITEM *item)
     }
     else if (strcmp(item_name(item), choices[6]) == 0)
     {
-        if (data.alarm == 0)
+        if (data.alarm == 1)
         {
             item->description.str = "OFF";
             data.alarm = 0;
@@ -259,9 +261,9 @@ void render_info_win()
 
     if (data.presences1)
     {
-        wattron(my_menu_win, COLOR_PAIR(2));
+        wattron(my_menu_win_info, COLOR_PAIR(4));
         mvwprintw(my_menu_win_info, 3, 2, sensors[0]);
-        wattroff(my_menu_win, COLOR_PAIR(2));
+        wattroff(my_menu_win_info, COLOR_PAIR(4));
     }
     else
     {
@@ -270,9 +272,9 @@ void render_info_win()
 
     if (data.presences2)
     {
-        wattron(my_menu_win, COLOR_PAIR(2));
+        wattron(my_menu_win_info, COLOR_PAIR(4));
         mvwprintw(my_menu_win_info, 4, 2, sensors[1]);
-        wattroff(my_menu_win, COLOR_PAIR(2));
+        wattroff(my_menu_win_info, COLOR_PAIR(4));
     }
     else
     {
@@ -281,9 +283,9 @@ void render_info_win()
 
     if (data.openings1)
     {
-        wattron(my_menu_win, COLOR_PAIR(2));
+        wattron(my_menu_win_info, COLOR_PAIR(4));
         mvwprintw(my_menu_win_info, 5, 2, sensors[2]);
-        wattroff(my_menu_win, COLOR_PAIR(2));
+        wattroff(my_menu_win_info, COLOR_PAIR(4));
     }
     else
     {
@@ -292,9 +294,9 @@ void render_info_win()
 
     if (data.openings2)
     {
-        wattron(my_menu_win, COLOR_PAIR(2));
+        wattron(my_menu_win_info, COLOR_PAIR(4));
         mvwprintw(my_menu_win_info, 6, 2, sensors[3]);
-        wattroff(my_menu_win, COLOR_PAIR(2));
+        wattroff(my_menu_win_info, COLOR_PAIR(4));
     }
     else
     {
@@ -303,9 +305,9 @@ void render_info_win()
 
     if (data.openings3)
     {
-        wattron(my_menu_win, COLOR_PAIR(2));
+        wattron(my_menu_win_info, COLOR_PAIR(4));
         mvwprintw(my_menu_win_info, 7, 2, sensors[4]);
-        wattroff(my_menu_win, COLOR_PAIR(2));
+        wattroff(my_menu_win_info, COLOR_PAIR(4));
     }
     else
     {
@@ -314,9 +316,9 @@ void render_info_win()
 
     if (data.openings4)
     {
-        wattron(my_menu_win, COLOR_PAIR(2));
+        wattron(my_menu_win_info, COLOR_PAIR(4));
         mvwprintw(my_menu_win_info, 8, 2, sensors[5]);
-        wattroff(my_menu_win, COLOR_PAIR(2));
+        wattroff(my_menu_win_info, COLOR_PAIR(4));
     }
     else
     {
@@ -325,9 +327,9 @@ void render_info_win()
 
     if (data.openings5)
     {
-        wattron(my_menu_win, COLOR_PAIR(2));
+        wattron(my_menu_win_info, COLOR_PAIR(4));
         mvwprintw(my_menu_win_info, 9, 2, sensors[6]);
-        wattroff(my_menu_win, COLOR_PAIR(2));
+        wattroff(my_menu_win_info, COLOR_PAIR(4));
     }
     else
     {
@@ -336,14 +338,30 @@ void render_info_win()
 
     if (data.openings6)
     {
-        wattron(my_menu_win, COLOR_PAIR(2));
+        wattron(my_menu_win_info, COLOR_PAIR(4));
         mvwprintw(my_menu_win_info, 10, 2, sensors[7]);
-        wattroff(my_menu_win, COLOR_PAIR(2));
+        wattroff(my_menu_win_info, COLOR_PAIR(4));
     }
     else
     {
         mvwprintw(my_menu_win_info, 10, 2, sensors[7]);
     }
+
+    if (data.playing)
+    {
+        wattron(my_menu_win_info, COLOR_PAIR(4));
+        wattron(my_menu_win_info, A_BLINK);
+        wattron(my_menu_win_info, A_BOLD);
+        mvwprintw(my_menu_win_info, 11, 2, sensors[8]);
+        wattron(my_menu_win_info, A_BOLD);
+        wattroff(my_menu_win_info, A_BLINK);
+        wattroff(my_menu_win_info, COLOR_PAIR(4));
+
+    }
+    else
+    {
+        mvwprintw(my_menu_win_info, 11, 2, sensors[8]);
+    }  
 
     mvwprintw(my_menu_win_info, ARRAY_SIZE(sensors) + 4, 2, "Temperatura: %4.2f \tHumidade: %4.2f", data.temperature, data.humidity);
 
@@ -363,6 +381,7 @@ int dashboard()
     init_pair(1, COLOR_RED, COLOR_BLACK);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
     init_pair(3, COLOR_WHITE, COLOR_BLACK);
+    init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 
     render_info_win();
     render_input_menu();

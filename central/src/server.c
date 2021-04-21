@@ -7,115 +7,51 @@
 #include "data.h"
 #include "csv.h"
 
-void handleSensor(int sensor)
+void handleSensor(int sensor, int state)
 {
-    printf("(SERVER) HANDLE SENSOR\n");
+    //printf("(SERVER) HANDLE SENSOR\n");
     Data data = get_data();
 
     switch (sensor)
     {
     case PRESENCE_SENSOR_1:
-        if (data.presences1 == 0)
-        {
-            data.presences1 = 1;
-            write_csv(PRESENCE_SENSOR_1, 1);
-        }
-        else
-        {
-            data.presences1 = 0;
-            write_csv(PRESENCE_SENSOR_1, 0);
-        }
+        data.presences1 = state;
+        write_csv(PRESENCE_SENSOR_1, state);
         break;
 
     case PRESENCE_SENSOR_2:
-        if (data.presences2 == 0)
-        {
-            data.presences2 = 1;
-            write_csv(PRESENCE_SENSOR_2, 1);
-        }
-        else
-        {
-            data.presences2 = 0;
-            write_csv(PRESENCE_SENSOR_2, 0);
-        }
+        data.presences2 = state;
+        write_csv(PRESENCE_SENSOR_2, 1);
         break;
 
     case OPENING_SENSOR_1:
-        if (data.openings1 == 0)
-        {
-            data.openings1 = 1;
-            write_csv(OPENING_SENSOR_1, 1);
-        }
-        else
-        {
-            data.openings1 = 0;
-            write_csv(OPENING_SENSOR_1, 0);
-        }
+        data.openings1 = state;
+        write_csv(OPENING_SENSOR_1, 1);
         break;
 
     case OPENING_SENSOR_2:
-        if (data.openings2 == 0)
-        {
-            data.openings2 = 1;
-            write_csv(OPENING_SENSOR_2, 1);
-        }
-        else
-        {
-            data.openings2 = 0;
-            write_csv(OPENING_SENSOR_2, 0);
-        }
+        data.openings2 = state;
+        write_csv(OPENING_SENSOR_2, 1);
         break;
 
     case OPENING_SENSOR_3:
-        if (data.openings3 == 0)
-        {
-            data.openings3 = 1;
-            write_csv(OPENING_SENSOR_3, 1);
-        }
-        else
-        {
-            data.openings3 = 0;
-            write_csv(OPENING_SENSOR_3, 0);
-        }
+        data.openings3 = state;
+        write_csv(OPENING_SENSOR_3, 1);
         break;
 
     case OPENING_SENSOR_4:
-        if (data.openings4 == 0)
-        {
-            data.openings4 = 1;
-            write_csv(OPENING_SENSOR_4, 1);
-        }
-        else
-        {
-            data.openings4 = 0;
-            write_csv(OPENING_SENSOR_4, 0);
-        }
+        data.openings4 = state;
+        write_csv(OPENING_SENSOR_4, 1);
         break;
 
     case OPENING_SENSOR_5:
-        if (data.openings5 == 0)
-        {
-            data.openings5 = 1;
-            write_csv(OPENING_SENSOR_5, 1);
-        }
-        else
-        {
-            data.openings5 = 0;
-            write_csv(OPENING_SENSOR_5, 0);
-        }
+        data.openings5 = state;
+        write_csv(OPENING_SENSOR_5, 1);
         break;
 
     case OPENING_SENSOR_6:
-        if (data.openings6 == 0)
-        {
-            data.openings6 = 1;
-            write_csv(OPENING_SENSOR_6, 1);
-        }
-        else
-        {
-            data.openings6 = 0;
-            write_csv(OPENING_SENSOR_6, 0);
-        }
+        data.openings6 = state;
+        write_csv(OPENING_SENSOR_6, 1);
         break;
 
     default:
@@ -130,14 +66,14 @@ void TrataClientTCP(int socketClient)
     char buffer[16];
     char response[16];
     int tamanhoRecebido;
-    int command;
+    int command, state;
 
     if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
         printf("(SERVER) Erro no recv() SERVER\n");
-    sscanf(buffer, "%d", &command);
-    snprintf(response, 15, "%d", command);
-    printf("(SERVER) %d SERVER RECEIVED\n", command);
-    handleSensor(command);
+    sscanf(buffer, "%d %d", &command, &state);
+    snprintf(response, 15, "%d", command, state);
+    printf("(SERVER) %d SERVER RECEIVED\n", state);
+    handleSensor(command, state);
 
     while (tamanhoRecebido > 0)
     {
@@ -146,8 +82,8 @@ void TrataClientTCP(int socketClient)
 
         if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
             printf("(SERVER) Erro no recv() SERVER\n");
-        sscanf(buffer, "%d", &command);
-        snprintf(response, 15, "%d", command);
+        sscanf(buffer, "%d %d", &command, &state);
+        snprintf(response, 15, "%d", command, state);
     }
 }
 
@@ -185,7 +121,7 @@ void receive_messages()
                  &clienteLength)) < 0)
             printf("(SERVER) Falha no Accept\n");
 
-        printf("(SERVER) Conexão do Cliente %s\n", inet_ntoa(clienteAddr.sin_addr));
+        //printf("(SERVER) Conexão do Cliente %s\n", inet_ntoa(clienteAddr.sin_addr));
 
         TrataClientTCP(socketCliente);
         close(socketCliente);

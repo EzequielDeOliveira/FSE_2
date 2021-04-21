@@ -34,14 +34,12 @@ int main(int argc, char **argv)
 
     pthread_create(&tid[0], NULL, (void *)dashboard, (void *)NULL);
     pthread_create(&tid[1], NULL, (void *)getbme, (void *)NULL);
-    /* 
-    pthread_create(&tid[0], NULL, (void *)menu, (void *)NULL);
-     */
+    pthread_create(&tid[2], NULL, (void *)receive_messages, (void *)NULL);
+    
 
     pthread_join(tid[0], NULL);
     pthread_join(tid[1], NULL);
-    /* 
-    pthread_join(tid[2], NULL); */
+    pthread_join(tid[2], NULL);
 
     return 0;
 }
