@@ -114,9 +114,3 @@ void turn_off_all()
     change_state(AIR_1, LOW);
     change_state(AIR_2, LOW);
 }
-
-void interrupcao()
-{
-    turn_off_all();
-    exit(0);
-}

@@ -8,7 +8,9 @@
 
 void finish(int sinal)
 {
-    interrupcao();
+    turn_off_all();
+    printf("Finzalização completa...\n");
+    exit(0);
 }
 
 int main(int argc, char **argv)

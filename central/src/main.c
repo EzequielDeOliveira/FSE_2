@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <signal.h>
 #include "client.h"
 #include "csv.h"
 #include "server.h"
 #include "data.h"
 #include "dashboard.h"
+#include "alarm.h"
 
 void menu()
 {
@@ -26,8 +28,18 @@ void getbme()
     }
 }
 
+void finish(int sinal)
+{
+    finish_alarm();
+    finish_dashboard();
+    printf("Finzalização completa...\n");
+    exit(0);
+}
+
+
 int main(int argc, char **argv)
 {
+    signal(SIGINT, finish);
     pthread_t tid[3];
     init_data();
     csv_setup();

@@ -5,6 +5,8 @@
 #include "data.h"
 
 int playing = 0;
+pthread_t alarm;
+
 
 void* play() {
   while (playing == 1) {
@@ -17,8 +19,11 @@ void* play() {
 void turn_on_alarm() {
   Data data = get_data();
     playing = 1;
-    pthread_t alarm;
     pthread_create(&alarm, NULL, play, NULL);
+}
+
+void finish_alarm(){
+  pthread_cancel(alarm);
 }
 
 void turn_off_alarm() {

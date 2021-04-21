@@ -20,6 +20,6 @@
 
 void gpio_setup();
 void change_state(int device, int state);
-void interrupcao();
+void turn_off_all();
 
 #endif

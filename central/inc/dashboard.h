@@ -3,5 +3,6 @@
 
 void dashboard();
 void render_info_win();
+void finish_dashboard();
 
 #endif

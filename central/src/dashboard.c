@@ -26,8 +26,7 @@ char *sensors[] = {
     "Sensor Abertura 04 (Janela Sala)",
     "Sensor Abertura 05 (Janela Quarto 01)",
     "Sensor Abertura 06 (Janela Quarto 02)",
-    "Alarme Disparado"
-    };
+    "Alarme Disparado"};
 
 ITEM **my_items;
 ITEM *cur_item;
@@ -371,21 +370,29 @@ void render_info_win()
         wattron(my_menu_win_info, A_BOLD);
         wattroff(my_menu_win_info, A_BLINK);
         wattroff(my_menu_win_info, COLOR_PAIR(4));
-
     }
     else
     {
         mvwprintw(my_menu_win_info, 11, 2, sensors[8]);
-    }  
+    }
 
     mvwprintw(my_menu_win_info, ARRAY_SIZE(sensors) + 4, 2, "Temperatura: %4.2f \tHumidade: %4.2f", data.temperature, data.humidity);
 
     wrefresh(my_menu_win_info);
 }
 
-int dashboard()
+void finish_dashboard()
 {
+    /* Unpost and free all the memory taken up */
+    unpost_menu(my_menu);
+    free_menu(my_menu);
+    for (i = 0; i < n_choices; ++i)
+        free_item(my_items[i]);
+    endwin();
+}
 
+void dashboard()
+{
     /* Initialize curses */
     initscr();
     start_color();
@@ -422,11 +429,4 @@ int dashboard()
         }
         wrefresh(my_menu_win);
     }
-
-    /* Unpost and free all the memory taken up */
-    unpost_menu(my_menu);
-    free_menu(my_menu);
-    for (i = 0; i < n_choices; ++i)
-        free_item(my_items[i]);
-    endwin();
 }
