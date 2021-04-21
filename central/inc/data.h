@@ -16,7 +16,7 @@
 #define OPENING_SENSOR_5 28
 #define OPENING_SENSOR_6 29
 #define ALARM_ENABLED 10
-#define ALARM_PLAYIMG 11
+#define ALARM_PLAYING 11
 
 typedef struct
 {

@@ -47,15 +47,25 @@ void set_data(Data _data)
         if (data.playing == 0 && data.alarm == 1)
         {
             _data.playing = 1;
-            write_csv(ALARM_PLAYIMG, 1);
+            write_csv(ALARM_PLAYING, 1);
             turn_on_alarm();
         }
     }
     else
     {
-        _data.playing = 0;
-        write_csv(ALARM_PLAYIMG, 0);
-        turn_off_alarm();
+        if (_data.openings1 != data.openings1 ||
+            _data.openings2 != data.openings2 ||
+            _data.openings3 != data.openings3 ||
+            _data.openings4 != data.openings4 ||
+            _data.openings5 != data.openings5 ||
+            _data.openings6 != data.openings6 ||
+            _data.presences1 != data.presences1 ||
+            _data.presences2 != data.presences1)
+        {
+            _data.playing = 0;
+            write_csv(ALARM_PLAYING, 0);
+            turn_off_alarm();
+        }
     }
 
     data = _data;
