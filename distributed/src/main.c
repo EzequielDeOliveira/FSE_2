@@ -5,22 +5,15 @@
 #include "gpio.h"
 #include "server.h"
 #include "data.h"
+#include "quit.h"
 
-void finish(int sinal)
-{
-    turn_off_all();
-    printf("Finzalização completa...\n");
-    exit(0);
-}
 
 int main(int argc, char **argv)
 {
-
-    signal(SIGINT, finish);
     bme280_init();
     init_data();
     gpio_setup();
-    
+    quit_handler();   
     receive_messages();
     return 0;
 }

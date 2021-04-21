@@ -8,6 +8,7 @@
 #include "data.h"
 #include "dashboard.h"
 #include "alarm.h"
+#include "quit.c"
 
 void menu()
 {
@@ -28,21 +29,13 @@ void getbme()
     }
 }
 
-void finish(int sinal)
-{
-    finish_alarm();
-    finish_dashboard();
-    printf("Finzalização completa...\n");
-    exit(0);
-}
-
-
 int main(int argc, char **argv)
 {
-    signal(SIGINT, finish);
+
     pthread_t tid[3];
     init_data();
     csv_setup();
+    quit_handler();
 
     pthread_create(&tid[0], NULL, (void *)dashboard, (void *)NULL);
     pthread_create(&tid[1], NULL, (void *)getbme, (void *)NULL);

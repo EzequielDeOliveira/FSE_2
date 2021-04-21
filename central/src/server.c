@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "data.h"
 #include "csv.h"
+#include "quit.h"
 
 void handleSensor(int sensor, int state)
 {
@@ -69,7 +70,10 @@ void TrataClientTCP(int socketClient)
     int command, state;
 
     if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
+    {
         printf("(SERVER) Erro no recv() SERVER\n");
+        finishWithError(0);
+    }
     sscanf(buffer, "%d %d", &command, &state);
     snprintf(response, 15, "%d", command, state);
     //printf("(SERVER) %d SERVER RECEIVED\n", state);
@@ -78,10 +82,16 @@ void TrataClientTCP(int socketClient)
     while (tamanhoRecebido > 0)
     {
         if (send(socketClient, response, 16 - 1, 0) != 15)
+        {
             printf("(SERVER) Erro no envio - sends() SERVER\n");
+            finishWithError(0);
+        }
 
         if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
+        {
             printf("(SERVER) Erro no recv() SERVER\n");
+            finishWithError(0);
+        }
         sscanf(buffer, "%d %d", &command, &state);
         snprintf(response, 15, "%d", command, state);
     }
@@ -99,7 +109,10 @@ void receive_messages()
     servidorPorta = 10015;
 
     if ((servidorSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+    {
         printf("(SERVER) falha no socker do Servidor\n");
+        finishWithError(0);
+    }
 
     memset(&servidorAddr, 0, sizeof(servidorAddr));
     servidorAddr.sin_family = AF_INET;
@@ -107,10 +120,16 @@ void receive_messages()
     servidorAddr.sin_port = htons(servidorPorta);
 
     if (bind(servidorSocket, (struct sockaddr *)&servidorAddr, sizeof(servidorAddr)) < 0)
+    {
         printf("(SERVER) Falha no Bind\n");
+        finishWithError(0);
+    }
 
     if (listen(servidorSocket, 10) < 0)
+    {
         printf("(SERVER) Falha no Listen\n");
+        finishWithError(0);
+    }
 
     while (1)
     {
@@ -119,7 +138,10 @@ void receive_messages()
                  servidorSocket,
                  (struct sockaddr *)&clienteAddr,
                  &clienteLength)) < 0)
+        {
             printf("(SERVER) Falha no Accept\n");
+            finishWithError(0);
+        }
 
         //printf("(SERVER) Conexão do Cliente %s\n", inet_ntoa(clienteAddr.sin_addr));
 

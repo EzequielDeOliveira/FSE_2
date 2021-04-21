@@ -7,6 +7,7 @@
 #include <bme280.h>
 #include "gpio.h"
 #include "data.h"
+#include "quit.h"
 
 void handleDevices(int device)
 {
@@ -108,7 +109,10 @@ void TrataClientTCP(int socketClient)
     struct bme280_data data = bme280_read();
 
     if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
+    {
         printf("Erro no recv()\n");
+        finishWithError(0);
+    }
     sscanf(buffer, "%d", &command);
     handleDevices(command);
     data = bme280_read();
@@ -117,10 +121,16 @@ void TrataClientTCP(int socketClient)
     while (tamanhoRecebido > 0)
     {
         if (send(socketClient, response, 16 - 1, 0) != 15)
+        {
             printf("Erro no envio - sends()\n");
+            finishWithError(0);
+        }
 
         if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
+        {
             printf("Erro no recv()\n");
+            finishWithError(0);
+        }
         sscanf(buffer, "%d", &command);
         data = bme280_read();
         snprintf(response, 15, "%d %.2f %.2f", command, data.temperature, data.humidity);
@@ -139,7 +149,10 @@ void receive_messages()
     servidorPorta = 10115;
 
     if ((servidorSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+    {
         printf("falha no socker do Servidor\n");
+        finishWithError(0);
+    }
 
     memset(&servidorAddr, 0, sizeof(servidorAddr));
     servidorAddr.sin_family = AF_INET;
@@ -147,10 +160,16 @@ void receive_messages()
     servidorAddr.sin_port = htons(servidorPorta);
 
     if (bind(servidorSocket, (struct sockaddr *)&servidorAddr, sizeof(servidorAddr)) < 0)
+    {
         printf("Falha no Bind\n");
+        finishWithError(0);
+    }
 
     if (listen(servidorSocket, 10) < 0)
+    {
         printf("Falha no Listen\n");
+        finishWithError(0);
+    }
 
     while (1)
     {
@@ -159,9 +178,12 @@ void receive_messages()
                  servidorSocket,
                  (struct sockaddr *)&clienteAddr,
                  &clienteLength)) < 0)
+        {
             printf("Falha no Accept\n");
+            finishWithError(0);
+        }
 
-        printf("Conexão do Cliente %s\n", inet_ntoa(clienteAddr.sin_addr));
+        //printf("Conexão do Cliente %s\n", inet_ntoa(clienteAddr.sin_addr));
 
         TrataClientTCP(socketCliente);
         close(socketCliente);
