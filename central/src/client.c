@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "data.h"
+#include "dashboard.h"
 
 #define LEN 16
 
@@ -57,9 +58,10 @@ void send_command(int command)
         float temperature;
         float humidity;
         int command_received;
-        printf("(CLIENT) %s\n", buffer);
+        //printf("(CLIENT) %s\n", buffer);
         sscanf(buffer, "%d %f %f", &command_received, &temperature, &humidity);
-        printf("(CLIENT) %d %.2f %.2f", command_received, temperature, humidity);
+        //printf("(CLIENT) %d %.2f %.2f", command_received, temperature, humidity);
+        render_info_win(temperature, humidity);
     } else {
         printf("(CLIENT) %s\n", buffer);
     }

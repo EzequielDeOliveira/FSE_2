@@ -10,7 +10,8 @@
 void menu()
 {
     int command = 0;
-    while(command != -1){
+    while (command != -1)
+    {
         scanf("%d", &command);
         send_command(command);
     }
@@ -32,11 +33,14 @@ int main(int argc, char **argv)
     csv_setup();
 
     pthread_create(&tid[0], NULL, (void *)dashboard, (void *)NULL);
-    /* pthread_create(&tid[0], NULL, (void *)menu, (void *)NULL);
-    pthread_create(&tid[1], NULL, (void *)getbme, (void *)NULL); */
+    pthread_create(&tid[1], NULL, (void *)getbme, (void *)NULL);
+    /* 
+    pthread_create(&tid[0], NULL, (void *)menu, (void *)NULL);
+     */
 
     pthread_join(tid[0], NULL);
-    /* pthread_join(tid[1], NULL);
+    pthread_join(tid[1], NULL);
+    /* 
     pthread_join(tid[2], NULL); */
 
     return 0;
