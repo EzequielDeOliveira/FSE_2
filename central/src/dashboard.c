@@ -1,4 +1,5 @@
 #include <menu.h>
+#include <ncurses.h>
 #include "data.h"
 #include "server.h"
 
@@ -76,7 +77,7 @@ void change_device_status(ITEM *item)
     if (strcmp(item_name(item), choices[0]) == 0)
     {
         send_command(LAMP_1);
-        if (data.lamp1 == 1)
+        if (data.lamp1 == 0)
         {
             item->description.str = "OFF";
             data.lamp1 = 0;
@@ -90,7 +91,7 @@ void change_device_status(ITEM *item)
     else if (strcmp(item_name(item), choices[1]) == 0)
     {
         send_command(LAMP_2);
-        if (data.lamp2 == 1)
+        if (data.lamp2 == 0)
         {
             item->description.str = "OFF";
             data.lamp2 = 0;
@@ -104,7 +105,7 @@ void change_device_status(ITEM *item)
     else if (strcmp(item_name(item), choices[2]) == 0)
     {
         send_command(LAMP_3);
-        if (data.lamp3 == 1)
+        if (data.lamp3 == 0)
         {
             item->description.str = "OFF";
             data.lamp3 = 0;
@@ -118,7 +119,7 @@ void change_device_status(ITEM *item)
     else if (strcmp(item_name(item), choices[3]) == 0)
     {
         send_command(LAMP_4);
-        if (data.lamp4 == 1)
+        if (data.lamp4 == 0)
         {
             item->description.str = "OFF";
             data.lamp4 = 0;
@@ -132,7 +133,7 @@ void change_device_status(ITEM *item)
     else if (strcmp(item_name(item), choices[4]) == 0)
     {
         send_command(AIR_1);
-        if (data.air1 == 1)
+        if (data.air1 == 0)
         {
             item->description.str = "OFF";
             data.air1 = 0;
@@ -146,7 +147,7 @@ void change_device_status(ITEM *item)
     else if (strcmp(item_name(item), choices[5]) == 0)
     {
         send_command(AIR_2);
-        if (data.air2 == 1)
+        if (data.air2 == 0)
         {
             item->description.str = "OFF";
             data.air2 = 0;
@@ -159,7 +160,7 @@ void change_device_status(ITEM *item)
     }
     else if (strcmp(item_name(item), choices[6]) == 0)
     {
-        if (data.alarm == 1)
+        if (data.alarm == 0)
         {
             item->description.str = "OFF";
             data.alarm = 0;
@@ -242,8 +243,9 @@ void render_input_menu()
     wrefresh(my_menu_win);
 }
 
-void render_info_win(float temperature, float humidity)
+void render_info_win()
 {
+    Data data = get_data();
     my_menu_win_info = newwin(15, 51, 0, 50);
     keypad(my_menu_win_info, TRUE);
 
@@ -255,12 +257,95 @@ void render_info_win(float temperature, float humidity)
     mvwhline(my_menu_win_info, 2, 1, ACS_HLINE, 50);
     mvwaddch(my_menu_win_info, 2, 50, ACS_RTEE);
 
-    for (int i = 0; i < ARRAY_SIZE(sensors); i++)
+    if (data.presences1)
     {
-        mvwprintw(my_menu_win_info, i + 3, 2, sensors[i]);
+        wattron(my_menu_win, COLOR_PAIR(2));
+        mvwprintw(my_menu_win_info, 3, 2, sensors[0]);
+        wattroff(my_menu_win, COLOR_PAIR(2));
+    }
+    else
+    {
+        mvwprintw(my_menu_win_info, 3, 2, sensors[0]);
     }
 
-    mvwprintw(my_menu_win_info, ARRAY_SIZE(sensors) + 4, 2, "Temperatura: %4.2f \tHumidade: %4.2f", temperature, humidity);
+    if (data.presences2)
+    {
+        wattron(my_menu_win, COLOR_PAIR(2));
+        mvwprintw(my_menu_win_info, 4, 2, sensors[1]);
+        wattroff(my_menu_win, COLOR_PAIR(2));
+    }
+    else
+    {
+        mvwprintw(my_menu_win_info, 4, 2, sensors[1]);
+    }
+
+    if (data.openings1)
+    {
+        wattron(my_menu_win, COLOR_PAIR(2));
+        mvwprintw(my_menu_win_info, 5, 2, sensors[2]);
+        wattroff(my_menu_win, COLOR_PAIR(2));
+    }
+    else
+    {
+        mvwprintw(my_menu_win_info, 5, 2, sensors[2]);
+    }
+
+    if (data.openings2)
+    {
+        wattron(my_menu_win, COLOR_PAIR(2));
+        mvwprintw(my_menu_win_info, 6, 2, sensors[3]);
+        wattroff(my_menu_win, COLOR_PAIR(2));
+    }
+    else
+    {
+        mvwprintw(my_menu_win_info, 6, 2, sensors[3]);
+    }
+
+    if (data.openings3)
+    {
+        wattron(my_menu_win, COLOR_PAIR(2));
+        mvwprintw(my_menu_win_info, 7, 2, sensors[4]);
+        wattroff(my_menu_win, COLOR_PAIR(2));
+    }
+    else
+    {
+        mvwprintw(my_menu_win_info, 7, 2, sensors[4]);
+    }
+
+    if (data.openings4)
+    {
+        wattron(my_menu_win, COLOR_PAIR(2));
+        mvwprintw(my_menu_win_info, 8, 2, sensors[5]);
+        wattroff(my_menu_win, COLOR_PAIR(2));
+    }
+    else
+    {
+        mvwprintw(my_menu_win_info, 8, 2, sensors[5]);
+    }
+
+    if (data.openings5)
+    {
+        wattron(my_menu_win, COLOR_PAIR(2));
+        mvwprintw(my_menu_win_info, 9, 2, sensors[6]);
+        wattroff(my_menu_win, COLOR_PAIR(2));
+    }
+    else
+    {
+        mvwprintw(my_menu_win_info, 9, 2, sensors[6]);
+    }
+
+    if (data.openings6)
+    {
+        wattron(my_menu_win, COLOR_PAIR(2));
+        mvwprintw(my_menu_win_info, 10, 2, sensors[7]);
+        wattroff(my_menu_win, COLOR_PAIR(2));
+    }
+    else
+    {
+        mvwprintw(my_menu_win_info, 10, 2, sensors[7]);
+    }
+
+    mvwprintw(my_menu_win_info, ARRAY_SIZE(sensors) + 4, 2, "Temperatura: %4.2f \tHumidade: %4.2f", data.temperature, data.humidity);
 
     wrefresh(my_menu_win_info);
 }
@@ -279,7 +364,7 @@ int dashboard()
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
     init_pair(3, COLOR_WHITE, COLOR_BLACK);
 
-    render_info_win(0,0);
+    render_info_win();
     render_input_menu();
 
     mvprintw(LINES - 3, 0, "Use <SPACE> para acionar o dispositivo");

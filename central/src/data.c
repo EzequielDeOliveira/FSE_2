@@ -22,7 +22,7 @@ void init_data()
     data.presences2 = 0;
     data.humidity = 0;
     data.temperature = 0;
-    data.alarm = 1;
+    data.alarm = 0;
 }
 
 Data get_data()
@@ -54,7 +54,8 @@ void set_data(Data _data)
         turn_off_alarm();
     }
 
-    render_info_win(_data.temperature, _data.humidity);
 
     data = _data;
+
+    render_info_win();
 }
