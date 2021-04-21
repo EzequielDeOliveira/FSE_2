@@ -1,5 +1,6 @@
 #include "data.h"
 #include "alarm.h"
+#include "dashboard.h"
 
 Data data;
 
@@ -52,6 +53,8 @@ void set_data(Data _data)
         _data.playing = 0;
         turn_off_alarm();
     }
+
+    render_info_win(_data.temperature, _data.humidity);
 
     data = _data;
 }

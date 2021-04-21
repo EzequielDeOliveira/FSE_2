@@ -60,10 +60,14 @@ void send_command(int command)
         int command_received;
         //printf("(CLIENT) %s\n", buffer);
         sscanf(buffer, "%d %f %f", &command_received, &temperature, &humidity);
+        if(command == command_received) {
+            Data data = get_data();
+            data.temperature = temperature;
+            data.humidity = humidity;
+            set_data(data);
+        }
         //printf("(CLIENT) %d %.2f %.2f", command_received, temperature, humidity);
-        render_info_win(temperature, humidity);
-    } else {
-        printf("(CLIENT) %s\n", buffer);
+        //render_info_win(temperature, humidity);
     }
     close(clienteSocket);
 }
