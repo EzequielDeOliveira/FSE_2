@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include "data.h"
 #include "server.h"
+#include "csv.h"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
@@ -83,11 +84,13 @@ void change_device_status(ITEM *item)
         {
             item->description.str = "OFF";
             data.lamp1 = 0;
+            write_csv(LAMP_1, 0);
         }
         else
         {
             item->description.str = " ON";
             data.lamp1 = 1;
+            write_csv(LAMP_1, 1);
         }
     }
     else if (strcmp(item_name(item), choices[1]) == 0)
@@ -97,11 +100,13 @@ void change_device_status(ITEM *item)
         {
             item->description.str = "OFF";
             data.lamp2 = 0;
+            write_csv(LAMP_2, 0);
         }
         else
         {
             item->description.str = " ON";
             data.lamp2 = 1;
+            write_csv(LAMP_2, 1);
         }
     }
     else if (strcmp(item_name(item), choices[2]) == 0)
@@ -111,11 +116,13 @@ void change_device_status(ITEM *item)
         {
             item->description.str = "OFF";
             data.lamp3 = 0;
+            write_csv(LAMP_3, 0);
         }
         else
         {
             item->description.str = " ON";
             data.lamp3 = 1;
+            write_csv(LAMP_3, 1);
         }
     }
     else if (strcmp(item_name(item), choices[3]) == 0)
@@ -125,11 +132,13 @@ void change_device_status(ITEM *item)
         {
             item->description.str = "OFF";
             data.lamp4 = 0;
+            write_csv(LAMP_4, 0);
         }
         else
         {
             item->description.str = " ON";
             data.lamp4 = 1;
+            write_csv(LAMP_4, 1);
         }
     }
     else if (strcmp(item_name(item), choices[4]) == 0)
@@ -139,11 +148,13 @@ void change_device_status(ITEM *item)
         {
             item->description.str = "OFF";
             data.air1 = 0;
+            write_csv(AIR_1, 0);
         }
         else
         {
             item->description.str = " ON";
             data.air1 = 1;
+            write_csv(AIR_1, 1);
         }
     }
     else if (strcmp(item_name(item), choices[5]) == 0)
@@ -153,11 +164,13 @@ void change_device_status(ITEM *item)
         {
             item->description.str = "OFF";
             data.air2 = 0;
+            write_csv(AIR_2, 0);
         }
         else
         {
             item->description.str = " ON";
             data.air2 = 1;
+            write_csv(AIR_2, 1);
         }
     }
     else if (strcmp(item_name(item), choices[6]) == 0)
@@ -166,11 +179,13 @@ void change_device_status(ITEM *item)
         {
             item->description.str = "OFF";
             data.alarm = 0;
+            write_csv(ALARM_ENABLED, 0);
         }
         else
         {
             item->description.str = " ON";
             data.alarm = 1;
+            write_csv(ALARM_ENABLED, 1);
         }
     }
 
@@ -235,7 +250,7 @@ void render_input_menu()
 
     box(my_menu_win, 0, 0);
 
-    print_in_middle(my_menu_win, 1, 0, 40, "Interruptores", COLOR_PAIR(3));
+    print_in_middle(my_menu_win, 1, 0, 50, "Interruptores", COLOR_PAIR(3));
 
     mvwaddch(my_menu_win, 2, 0, ACS_LTEE);
     mvwhline(my_menu_win, 2, 1, ACS_HLINE, 49);

@@ -72,7 +72,7 @@ void TrataClientTCP(int socketClient)
         printf("(SERVER) Erro no recv() SERVER\n");
     sscanf(buffer, "%d %d", &command, &state);
     snprintf(response, 15, "%d", command, state);
-    printf("(SERVER) %d SERVER RECEIVED\n", state);
+    //printf("(SERVER) %d SERVER RECEIVED\n", state);
     handleSensor(command, state);
 
     while (tamanhoRecebido > 0)

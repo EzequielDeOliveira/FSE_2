@@ -61,6 +61,11 @@ void write_csv(int device, int state)
         fprintf(file, "%s,%s,%s\n", buffer, "Sensor Abertura 05 (Janela Quarto 01)", stateText);
     else if (device == OPENING_SENSOR_6)
         fprintf(file, "%s,%s,%s\n", buffer, "Sensor Abertura 06 (Janela Quarto 02)", stateText);
+    else if (device == ALARM_ENABLED)
+        fprintf(file, "%s,%s,%s\n", buffer, "Alarme", stateText);
+    else if (device == ALARM_PLAYING)
+        fprintf(file, "%s,%s,%s\n", buffer, "Alarme Disparado", stateText);
+
 
     fclose(file);
 }

@@ -1,6 +1,7 @@
 #include "data.h"
 #include "alarm.h"
 #include "dashboard.h"
+#include "csv.h"
 
 Data data;
 
@@ -46,12 +47,14 @@ void set_data(Data _data)
         if (data.playing == 0 && data.alarm == 1)
         {
             _data.playing = 1;
+            write_csv(ALARM_PLAYIMG, 1);
             turn_on_alarm();
         }
     }
     else
     {
         _data.playing = 0;
+        write_csv(ALARM_PLAYIMG, 0);
         turn_off_alarm();
     }
 

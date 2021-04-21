@@ -105,14 +105,21 @@ void TrataClientTCP(int socketClient)
     char response[16];
     int tamanhoRecebido;
     int command;
-    struct bme280_data data = bme280_read();
 
     if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
         printf("Erro no recv()\n");
     sscanf(buffer, "%d", &command);
-    handleDevices(command);
-    data = bme280_read();
-    snprintf(response, 15, "%d %.2f %.2f", command, data.temperature, data.humidity);
+    if (command == -1)
+    {
+        struct bme280_data data = bme280_read();
+        data = bme280_read();
+        snprintf(response, 15, "%d %.2f %.2f", command, data.temperature, data.humidity);
+    }
+    else
+    {
+        handleDevices(command);
+        snprintf(response, 15, "%d", command);
+    }
 
     while (tamanhoRecebido > 0)
     {
@@ -122,8 +129,17 @@ void TrataClientTCP(int socketClient)
         if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
             printf("Erro no recv()\n");
         sscanf(buffer, "%d", &command);
-        data = bme280_read();
-        snprintf(response, 15, "%d %.2f %.2f", command, data.temperature, data.humidity);
+        if (command == -1)
+        {
+            struct bme280_data data = bme280_read();
+            data = bme280_read();
+            snprintf(response, 15, "%d %.2f %.2f", command, data.temperature, data.humidity);
+        }
+        else
+        {
+            handleDevices(command);
+            snprintf(response, 15, "%d", command);
+        }
     }
 }
 
