@@ -7,25 +7,14 @@
 #include "server.h"
 #include "data.h"
 #include "dashboard.h"
-#include "alarm.h"
 #include "quit.h"
-
-void menu()
-{
-    int command = 0;
-    while (command != -1)
-    {
-        scanf("%d", &command);
-        send_command(command);
-    }
-}
 
 void getbme()
 {
     while (1)
     {
         send_command(-1);
-        usleep(700000);
+        usleep(800000);
     }
 }
 

@@ -16,12 +16,11 @@ void send_command(int command, int state)
 {
     int clientSocket;
     struct sockaddr_in serverAddr;
-    char message[16];
-    char buffer[16];
+    char message[LEN];
+    char buffer[LEN];
     unsigned int messageLength;
 
-    int bytesRecebidos;
-    int totalBytesRecebidos;
+    int totalBytesReceived;
 
     sprintf(message, "%d %d", command, state);
 
@@ -51,9 +50,9 @@ void send_command(int command, int state)
         finishWithError(0);
     }
 
-    totalBytesRecebidos = recv(clientSocket, buffer, 16 - 1, 0);
+    totalBytesReceived = recv(clientSocket, buffer, LEN - 1, 0);
 
-    if (totalBytesRecebidos < 1)
+    if (totalBytesReceived < 1)
     {
         printf("Não recebeu o total de bytes enviados\n");
         finishWithError(0);

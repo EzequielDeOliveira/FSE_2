@@ -10,55 +10,50 @@
 
 #define LEN 16
 
-char *IP_Server = "192.168.0.4";
-unsigned short Port_Server = 10115;
+#define IP_Server "192.168.0.4"
+#define Port_Server 10115
 
 void send_command(int command)
 {
-    int clienteSocket;
-    struct sockaddr_in servidorAddr;
-    unsigned short servidorPorta;
-    char *IP_Servidor;
-    char mensagem[16];
-    char buffer[16];
-    unsigned int tamanhoMensagem;
+    int clientSocket;
+    struct sockaddr_in serverAddr;
+    char message[LEN];
+    char buffer[LEN];
+    unsigned int messageLength;
 
-    int bytesRecebidos;
-    int totalBytesRecebidos;
+    int totalBytesReceived;
 
-    IP_Servidor = "192.168.0.4";
-    servidorPorta = 10115;
-    sprintf(mensagem, "%d", command);
+    sprintf(message, "%d", command);
 
-    if ((clienteSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+    if ((clientSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
     {
         printf("(CLIENT) Erro no socket()");
         finishWithError(0);
     }
 
-    memset(&servidorAddr, 0, sizeof(servidorAddr));
-    servidorAddr.sin_family = AF_INET;
-    servidorAddr.sin_addr.s_addr = inet_addr(IP_Servidor);
-    servidorAddr.sin_port = htons(servidorPorta);
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_addr.s_addr = inet_addr(IP_Server);
+    serverAddr.sin_port = htons(Port_Server);
 
-    if (connect(clienteSocket, (struct sockaddr *)&servidorAddr,
-                sizeof(servidorAddr)) < 0)
+    if (connect(clientSocket, (struct sockaddr *)&serverAddr,
+                sizeof(serverAddr)) < 0)
     {
         printf("(CLIENT) Erro no connect()\n");
         finishWithError(0);
     }
 
-    tamanhoMensagem = strlen(mensagem);
+    messageLength = strlen(message);
 
-    if (send(clienteSocket, mensagem, tamanhoMensagem, 0) != tamanhoMensagem)
+    if (send(clientSocket, message, messageLength, 0) != messageLength)
     {
         printf("(CLIENT) Erro no envio: numero de bytes enviados diferente do esperado\n");
         finishWithError(0);
     }
 
-    totalBytesRecebidos = recv(clienteSocket, buffer, 16 - 1, 0);
+    totalBytesReceived = recv(clientSocket, buffer, LEN - 1, 0);
 
-    if (totalBytesRecebidos < 1)
+    if (totalBytesReceived < 1)
     {
         printf("(CLIENT) Não recebeu o total de bytes enviados\n");
         finishWithError(0);
@@ -69,7 +64,6 @@ void send_command(int command)
         float temperature;
         float humidity;
         int command_received;
-        //printf("(CLIENT) %s\n", buffer);
         sscanf(buffer, "%d %f %f", &command_received, &temperature, &humidity);
         if (command == command_received)
         {
@@ -78,8 +72,6 @@ void send_command(int command)
             data.humidity = humidity;
             set_data(data);
         }
-        //printf("(CLIENT) %d %.2f %.2f", command_received, temperature, humidity);
-        //render_info_win(temperature, humidity);
     }
-    close(clienteSocket);
+    close(clientSocket);
 }

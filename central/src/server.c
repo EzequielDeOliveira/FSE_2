@@ -8,9 +8,10 @@
 #include "csv.h"
 #include "quit.h"
 
+#define PORT_SERVER 10015
+
 void handleSensor(int sensor, int state)
 {
-    //printf("(SERVER) HANDLE SENSOR\n");
     Data data = get_data();
 
     switch (sensor)
@@ -62,70 +63,55 @@ void handleSensor(int sensor, int state)
     set_data(data);
 }
 
-void TrataClientTCP(int socketClient)
+void handleClient(int socketClient)
 {
     char buffer[16];
     char response[16];
-    int tamanhoRecebido;
+    int responseLength;
     int command, state;
 
-    if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
+    if ((responseLength = recv(socketClient, buffer, 16, 0)) < 0)
     {
         printf("(SERVER) Erro no recv() SERVER\n");
         finishWithError(0);
     }
     sscanf(buffer, "%d %d", &command, &state);
     snprintf(response, 15, "%d", command, state);
-    //printf("(SERVER) %d SERVER RECEIVED\n", state);
     handleSensor(command, state);
 
-    while (tamanhoRecebido > 0)
+    if (send(socketClient, response, 16 - 1, 0) != 15)
     {
-        if (send(socketClient, response, 16 - 1, 0) != 15)
-        {
-            printf("(SERVER) Erro no envio - sends() SERVER\n");
-            finishWithError(0);
-        }
-
-        if ((tamanhoRecebido = recv(socketClient, buffer, 16, 0)) < 0)
-        {
-            printf("(SERVER) Erro no recv() SERVER\n");
-            finishWithError(0);
-        }
-        sscanf(buffer, "%d %d", &command, &state);
-        snprintf(response, 15, "%d", command, state);
+        printf("(SERVER) Erro no envio - sends() SERVER\n");
+        finishWithError(0);
     }
 }
 
 void receive_messages()
 {
-    int servidorSocket;
-    int socketCliente;
-    struct sockaddr_in servidorAddr;
-    struct sockaddr_in clienteAddr;
-    unsigned short servidorPorta;
-    unsigned int clienteLength;
+    int serverSocket;
+    int socketClient;
+    struct sockaddr_in serverAddr;
+    struct sockaddr_in clientAddr;
+    unsigned int clientLength;
 
-    servidorPorta = 10015;
-
-    if ((servidorSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+    if ((serverSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
     {
         printf("(SERVER) falha no socker do Servidor\n");
         finishWithError(0);
     }
 
-    memset(&servidorAddr, 0, sizeof(servidorAddr));
-    servidorAddr.sin_family = AF_INET;
-    servidorAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servidorAddr.sin_port = htons(servidorPorta);
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serverAddr.sin_port = htons(PORT_SERVER);
 
-    if (bind(servidorSocket, (struct sockaddr *)&servidorAddr, sizeof(servidorAddr)) < 0)
+    if (bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0)
     {
         printf("(SERVER) Falha no Bind\n");
         finishWithError(0);
     }
 
-    if (listen(servidorSocket, 10) < 0)
+    if (listen(serverSocket, 10) < 0)
     {
         printf("(SERVER) Falha no Listen\n");
         finishWithError(0);
@@ -133,20 +119,18 @@ void receive_messages()
 
     while (1)
     {
-        clienteLength = sizeof(clienteAddr);
-        if ((socketCliente = accept(
-                 servidorSocket,
-                 (struct sockaddr *)&clienteAddr,
-                 &clienteLength)) < 0)
+        clientLength = sizeof(clientAddr);
+        if ((socketClient = accept(
+                 serverSocket,
+                 (struct sockaddr *)&clientAddr,
+                 &clientLength)) < 0)
         {
             printf("(SERVER) Falha no Accept\n");
             finishWithError(0);
         }
 
-        //printf("(SERVER) Conexão do Cliente %s\n", inet_ntoa(clienteAddr.sin_addr));
-
-        TrataClientTCP(socketCliente);
-        close(socketCliente);
+        handleClient(socketClient);
+        close(socketClient);
     }
-    close(servidorSocket);
+    close(serverSocket);
 }

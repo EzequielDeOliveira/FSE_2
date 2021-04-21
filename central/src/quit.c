@@ -1,11 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 #include <signal.h>
-#include "client.h"
-#include "csv.h"
-#include "server.h"
-#include "data.h"
 #include "dashboard.h"
 #include "alarm.h"
 
@@ -26,5 +21,6 @@ void finishWithError(int signal)
 void quit_handler()
 {
     signal(SIGINT, finish);
+    signal(SIGTSTP, finish);
     signal(SIGPIPE, finishWithError);
 }

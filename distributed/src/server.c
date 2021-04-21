@@ -160,11 +160,11 @@ void receive_messages()
 
     while (1)
     {
-        lienteLength = sizeof(clientAddr);
+        clientLength = sizeof(clientAddr);
         if ((socketClient = accept(
                  serverSocket,
                  (struct sockaddr *)&clientAddr,
-                 &lienteLength)) < 0)
+                 &clientLength)) < 0)
         {
             printf("Falha no Accept\n");
             finishWithError(0);

@@ -66,6 +66,5 @@ void write_csv(int device, int state)
     else if (device == ALARM_PLAYING)
         fprintf(file, "%s,%s,%s\n", buffer, "Alarme Disparado", stateText);
 
-
     fclose(file);
 }

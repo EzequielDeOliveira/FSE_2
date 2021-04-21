@@ -227,24 +227,19 @@ void render_input_menu()
         my_items[i] = new_item(choices[i], device_status(i) == 1 ? "ON" : "OFF");
     }
 
-    /* Crate menu */
     my_menu = new_menu((ITEM **)my_items);
 
-    /* Make the menu multi valued */
     menu_opts_off(my_menu, O_ONEVALUE);
 
     my_menu_win = newwin(15, 50, 0, 0);
     keypad(my_menu_win, TRUE);
 
-    /* Set main window and sub window */
     set_menu_win(my_menu, my_menu_win);
     set_menu_sub(my_menu, derwin(my_menu_win, 7, 40, 3, 2));
 
-    /* Set fore ground and back ground of the menu */
     set_menu_fore(my_menu, COLOR_PAIR(2) | A_REVERSE);
     set_menu_back(my_menu, COLOR_PAIR(1));
 
-    /* Set menu mark to the string " * " */
     set_menu_mark(my_menu, " -> ");
 
     box(my_menu_win, 0, 0);
@@ -383,7 +378,6 @@ void render_info_win()
 
 void finish_dashboard()
 {
-    /* Unpost and free all the memory taken up */
     unpost_menu(my_menu);
     free_menu(my_menu);
     for (i = 0; i < n_choices; ++i)
@@ -393,7 +387,6 @@ void finish_dashboard()
 
 void dashboard()
 {
-    /* Initialize curses */
     initscr();
     start_color();
     cbreak();
@@ -410,10 +403,10 @@ void dashboard()
     render_input_menu();
 
     mvprintw(LINES - 3, 0, "Use <SPACE> para acionar o dispositivo");
-    mvprintw(LINES - 2, 0, "<ENTER> to see presently selected items(F1 to Exit)");
+    mvprintw(LINES - 2, 0, "Use as setas para se mover no menu de dispositivos");
     refresh();
 
-    while ((c = wgetch(my_menu_win)) != KEY_F(1))
+    while ((c = wgetch(my_menu_win)))
     {
         switch (c)
         {
