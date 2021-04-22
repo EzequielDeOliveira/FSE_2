@@ -10,6 +10,8 @@
 #include "quit.h"
 
 #define PORT 10115
+int serverSocket;
+int socketClient;
 
 void handleDevices(int device)
 {
@@ -127,10 +129,14 @@ void handleClient(int socketClient)
     }
 }
 
+void close_server_socket()
+{
+    close(socketClient);
+    close(serverSocket);
+}
+
 void receive_messages()
 {
-    int serverSocket;
-    int socketClient;
     struct sockaddr_in serverAddr;
     struct sockaddr_in clientAddr;
     unsigned int clientLength;

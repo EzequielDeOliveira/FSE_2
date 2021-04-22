@@ -3,9 +3,11 @@
 #include <signal.h>
 #include "dashboard.h"
 #include "alarm.h"
+#include "server.h"
 
 void finish(int signal)
 {
+    close_server_socket();
     finish_alarm();
     finish_dashboard();
     printf("Finzalização completa...\n");

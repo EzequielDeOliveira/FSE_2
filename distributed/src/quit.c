@@ -8,6 +8,7 @@
 
 void finish(int signal)
 {
+    close_server_socket();
     turn_off_all();
     printf("Finzalização completa...\n");
     exit(0);

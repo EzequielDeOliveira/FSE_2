@@ -10,6 +10,9 @@
 
 #define PORT_SERVER 10015
 
+int serverSocket;
+int socketClient;
+
 void handleSensor(int sensor, int state)
 {
     Data data = get_data();
@@ -86,10 +89,14 @@ void handleClient(int socketClient)
     }
 }
 
+void close_server_socket()
+{
+    close(socketClient);
+    close(serverSocket);
+}
+
 void receive_messages()
 {
-    int serverSocket;
-    int socketClient;
     struct sockaddr_in serverAddr;
     struct sockaddr_in clientAddr;
     unsigned int clientLength;

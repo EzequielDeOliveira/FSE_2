@@ -68,6 +68,13 @@ void set_data(Data _data)
         }
     }
 
+    if (_data.alarm == 0 && data.alarm == 1)
+    {
+        _data.playing = 0;
+        write_csv(ALARM_PLAYING, 0);
+        turn_off_alarm();
+    }
+
     data = _data;
 
     render_info_win();

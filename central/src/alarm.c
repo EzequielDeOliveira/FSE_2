@@ -26,6 +26,7 @@ void turn_on_alarm()
 
 void finish_alarm()
 {
+  turn_off_alarm();
   pthread_cancel(alarm);
 }
 
