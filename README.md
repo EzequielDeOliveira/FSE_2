@@ -32,7 +32,24 @@ $ make
 $ make run
 ```
 
+## Instruções
+
+- Para se movimentar no menu utiliza as setas ***KEY_UP*** e ***KEY_DOWN***
+- Para ativar ou desativar um item da lista use a tecla ***SPACE***
+- Para ativar o alarme é preciso desativar todos os sensores
+- Quando um sensor é ativado, é mostrado em amarelo na tela
+- O sensor distribuido apenas mostra que a comunicação foi feita
+- A comunicação entre os servidores é baseada em sockets, os IPs e PORTAS estão definidas nos arquivos **server** e **client** dos dois servidores
+
 ## Interface 
+
+![image](https://user-images.githubusercontent.com/37127457/115646566-c378e000-a2f8-11eb-9038-3d719bc71c5c.png)
+
+![image](https://user-images.githubusercontent.com/37127457/115646592-d2f82900-a2f8-11eb-9dda-cbd15b68a4c6.png)
+
+![image](https://user-images.githubusercontent.com/37127457/115646612-e1464500-a2f8-11eb-905d-40a99b75943e.png)
+
+![image](https://user-images.githubusercontent.com/37127457/115646662-ffac4080-a2f8-11eb-8558-2dfc897286d6.png)
 
 
 ## Referências
