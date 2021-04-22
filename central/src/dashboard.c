@@ -177,6 +177,12 @@ void change_device_status(ITEM *item)
     {
         if (data.alarm == 1)
         {
+            item->description.str = "OFF";
+            data.alarm = 0;
+            write_csv(ALARM_ENABLED, 0);
+        }
+        else
+        {
             if (data.openings1 == 0 &&
                 data.openings2 == 0 &&
                 data.openings3 == 0 &&
@@ -186,16 +192,10 @@ void change_device_status(ITEM *item)
                 data.presences1 == 0 &&
                 data.presences2 == 0)
             {
-                item->description.str = "OFF";
-                data.alarm = 0;
-                write_csv(ALARM_ENABLED, 0);
+                item->description.str = " ON";
+                data.alarm = 1;
+                write_csv(ALARM_ENABLED, 1);
             }
-        }
-        else
-        {
-            item->description.str = " ON";
-            data.alarm = 1;
-            write_csv(ALARM_ENABLED, 1);
         }
     }
 
