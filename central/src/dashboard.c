@@ -177,9 +177,19 @@ void change_device_status(ITEM *item)
     {
         if (data.alarm == 1)
         {
-            item->description.str = "OFF";
-            data.alarm = 0;
-            write_csv(ALARM_ENABLED, 0);
+            if (data.openings1 == 0 &&
+                data.openings2 == 0 &&
+                data.openings3 == 0 &&
+                data.openings4 == 0 &&
+                data.openings5 == 0 &&
+                data.openings6 == 0 &&
+                data.presences1 == 0 &&
+                data.presences2 == 0)
+            {
+                item->description.str = "OFF";
+                data.alarm = 0;
+                write_csv(ALARM_ENABLED, 0);
+            }
         }
         else
         {
@@ -410,7 +420,7 @@ void dashboard()
     mvprintw(LINES - 2, 0, "* Para finalizar basta usar 'CTRL + C' ou a tecla F1.");
     refresh();
 
-    while((c = getch()) != KEY_F(1))
+    while ((c = getch()) != KEY_F(1))
     {
         switch (c)
         {
