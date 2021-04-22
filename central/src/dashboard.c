@@ -3,6 +3,7 @@
 #include "data.h"
 #include "server.h"
 #include "csv.h"
+#include "quit.h"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
@@ -362,7 +363,7 @@ void render_info_win()
         wattron(my_menu_win_info, A_BLINK);
         wattron(my_menu_win_info, A_BOLD);
         mvwprintw(my_menu_win_info, 11, 2, sensors[8]);
-        wattron(my_menu_win_info, A_BOLD);
+        wattroff(my_menu_win_info, A_BOLD);
         wattroff(my_menu_win_info, A_BLINK);
         wattroff(my_menu_win_info, COLOR_PAIR(4));
     }
@@ -371,7 +372,9 @@ void render_info_win()
         mvwprintw(my_menu_win_info, 11, 2, sensors[8]);
     }
 
+    wattron(my_menu_win_info, A_BOLD);
     mvwprintw(my_menu_win_info, ARRAY_SIZE(sensors) + 4, 2, "Temperatura: %4.2f \tHumidade: %4.2f", data.temperature, data.humidity);
+    wattroff(my_menu_win_info, A_BOLD);
 
     wrefresh(my_menu_win_info);
 }
@@ -391,7 +394,6 @@ void dashboard()
     start_color();
     cbreak();
     noecho();
-    clear();
     curs_set(0);
     keypad(stdscr, TRUE);
     init_pair(1, COLOR_RED, COLOR_BLACK);
@@ -402,11 +404,13 @@ void dashboard()
     render_info_win();
     render_input_menu();
 
-    mvprintw(LINES - 3, 0, "Use <SPACE> para acionar o dispositivo");
-    mvprintw(LINES - 2, 0, "Use as setas para se mover no menu de dispositivos");
+    mvprintw(LINES - 5, 0, "* Use <SPACE> para acionar o dispositivo.");
+    mvprintw(LINES - 4, 0, "* Use as setas para se mover no menu de dispositivos.");
+    mvprintw(LINES - 3, 0, "* Para ativar o alarme desative todos os sensores.");
+    mvprintw(LINES - 2, 0, "* Para finalizar basta usar 'CTRL + C' ou a tecla F1.");
     refresh();
 
-    while ((c = wgetch(my_menu_win)))
+    while((c = getch()) != KEY_F(1))
     {
         switch (c)
         {
@@ -422,4 +426,6 @@ void dashboard()
         }
         wrefresh(my_menu_win);
     }
+
+    finish(0);
 }
