@@ -10,7 +10,7 @@
 
 #define LEN 16
 
-#define IP_Server "192.168.0.4"
+#define IP_Server "192.168.0.52"
 #define Port_Server 10115
 
 void send_command(int command)
